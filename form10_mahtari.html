@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 10 — Mahtari Vandan Yojana</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 0 20px; background: #fdf1f4; color: #1a1a1a; }
+  h1 { font-size: 19px; margin-bottom:2px; }
+  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
+  .badge { display:inline-block; background:#a3255a; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
+  .steps { display:flex; gap:4px; margin-bottom:16px; }
+  .step-dot { flex:1; height:6px; background:#e6cbd6; border-radius:3px; }
+  .step-dot.active { background:#a3255a; }
+  .step-dot.done { background:#1e8e3e; }
+  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
+  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+  h3 { font-size:15px; border-bottom:2px solid #a3255a; padding-bottom:6px; margin-top:0; color:#a3255a; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight:normal; font-size:11px; color:#888; }
+  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:10px; }
+  .row > div { flex:1; }
+  .row3 > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .radio-group label, .checkbox-group label { display:inline-block; font-weight:normal; margin-right:14px; font-size:13px; }
+  .nav { display:flex; justify-content:space-between; margin-top:22px; }
+  button { padding: 9px 22px; background: #a3255a; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
+  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
+  .info-box { background:#fdeef3; border:1px solid #f0b8cc; border-radius:6px; padding:10px 14px; font-size:12px; margin-bottom:14px; }
+  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
+  .otp-row { display:flex; gap:6px; margin-top:6px; }
+  .otp-row input { text-align:center; font-size:16px; padding:8px 0; }
+  .ack-box { background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; padding:16px; margin-top:16px; text-align:center; }
+  .ack-number { font-size:20px; font-weight:bold; letter-spacing:2px; color:#1e8e3e; font-family:'Courier New',monospace; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 10 · MAHTARI VANDAN YOJANA (SYNTHETIC)</span>
+  <h1>महतारी वंदन योजना — Registration Form</h1>
+  <div class="subtitle">Synthetic test form modeled on Chhattisgarh's active women welfare scheme (Rs.1,000/month to eligible married women). For QA purposes only — not the official CG government portal.</div>
+  <div class="info-box">Eligibility (as per scheme): married women residents of Chhattisgarh, age 21 years or above. Widowed, divorced, and abandoned women are also eligible.</div>
+  <div class="steps" id="stepsBar"></div>
+  <div class="step-label" id="stepLabel"></div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>1. Applicant details</h3>
+      <label for="full_name">Applicant's full name</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+        <div><label for="marital_status">Marital status</label>
+          <select id="marital_status" required><option value="">Select</option><option>Married</option><option>Widow</option><option>Divorced</option><option>Abandoned</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div><label for="husband_name">Husband's name</label><input type="text" id="husband_name" required></div>
+        <div><label for="aadhaar">Aadhaar number</label><input type="text" id="aadhaar" maxlength="12" required></div>
+      </div>
+      <div class="row">
+        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
+        <div><label for="category">Category</label><select id="category" required><option value="">Select</option><option>General</option><option>OBC</option><option>SC</option><option>ST</option></select></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>2. Residential address</h3>
+      <label for="address">Address</label>
+      <textarea id="address" rows="2" required></textarea>
+      <div class="row row3">
+        <div><label for="village">Village/ward</label><input type="text" id="village" required></div>
+        <div><label for="block">Block/tehsil</label><input type="text" id="block" required></div>
+        <div><label for="district">District</label><input type="text" id="district" required></div>
+      </div>
+      <label for="ration_card">Ration card number</label>
+      <input type="text" id="ration_card" required>
+      <div class="checkbox-group" style="margin-top:12px;">
+        <label><input type="checkbox" id="cg_resident" style="width:auto;" required> I confirm I am a resident of Chhattisgarh state</label>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>3. Bank account details (for direct benefit transfer)</h3>
+      <label for="bank_name">Bank name</label>
+      <input type="text" id="bank_name" required>
+      <div class="row">
+        <div><label for="account_no">Account number</label><input type="text" id="account_no" required></div>
+        <div><label for="ifsc">IFSC code</label><input type="text" id="ifsc" required></div>
+      </div>
+      <div class="checkbox-group">
+        <label><input type="checkbox" id="aadhaar_linked" style="width:auto;" required> This bank account is Aadhaar-linked and DBT-enabled</label>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>4. Supporting documents</h3>
+      <label for="photo">Passport-size photograph</label>
+      <div class="req-box">Format: JPEG. Max size: 200 KB.</div>
+      <input type="file" id="photo" accept="image/jpeg">
+      <label for="marriage_proof">Marriage certificate / proof of marital status</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB.</div>
+      <input type="file" id="marriage_proof" accept="application/pdf,image/jpeg">
+      <label for="aadhaar_copy">Aadhaar card copy</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB.</div>
+      <input type="file" id="aadhaar_copy" accept="application/pdf,image/jpeg">
+    </div>
+
+    <div class="panel" id="panel-4">
+      <h3>5. Declaration and verification</h3>
+      <div class="checkbox-group">
+        <label style="display:block;"><input type="checkbox" id="declare1" style="width:auto;" required> I declare that I am not a government employee or income-tax payee (as per scheme exclusion criteria)</label>
+        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare2" style="width:auto;" required> I declare the above information is true and correct</label>
+      </div>
+      <label>Security check</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <span class="captcha-text" id="captchaText"></span>
+        <button type="button" id="refreshCaptcha" class="secondary">&#8635;</button>
+      </div>
+      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
+      <label style="margin-top:16px;">Enter 6-digit OTP sent to your mobile</label>
+      <div class="otp-row">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+      </div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Test mode: any 6 digits accepted.</div>
+    </div>
+
+    <div class="panel" id="panel-5">
+      <h3>6. Review and submit</h3>
+      <div id="reviewBox"></div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  const stepNames = ['Applicant','Address','Bank details','Documents','Declaration','Review'];
+  const total = stepNames.length;
+  let current = 0;
+
+  const stepsBar = document.getElementById('stepsBar');
+  stepNames.forEach((n,i)=>{ const d=document.createElement('div'); d.className='step-dot'; d.id='dot-'+i; stepsBar.appendChild(d); });
+  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
+  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepLabel = document.getElementById('stepLabel');
+
+  let captchaValue = '';
+  function newCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('captchaText').textContent = captchaValue;
+  }
+  newCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
+    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Submit application' : 'Continue';
+    if (current === 5) buildReview();
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Full name','full_name'],['DOB','dob'],['Marital status','marital_status'],
+      ["Husband's name",'husband_name'],['Category','category'],['District','district'],
+      ['Bank name','bank_name'],['Account number','account_no']
+    ];
+    let html = '';
+    fields.forEach(([label,id])=>{
+      const el = document.getElementById(id);
+      html += `<div class="review-item"><span>${label}</span><span>${el.value || '(empty)'}</span></div>`;
+    });
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red'; inp.focus(); return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current === 4){
+      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (captchaInput !== captchaValue){
+        alert('Captcha does not match.'); newCaptcha();
+        document.getElementById('captchaInput').value = ''; return;
+      }
+      const otpBoxes = document.querySelectorAll('.otp-box');
+      const otp = Array.from(otpBoxes).map(b=>b.value).join('');
+      if (otp.length !== 6){ alert('Enter all 6 OTP digits (any digits work in test mode).'); return; }
+    }
+    if (current < total-1){ current++; updateUI(); return; }
+
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const regNo = 'MVY' + Math.floor(100000000 + Math.random()*900000000);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = 'APPLICATION SUBMITTED\nTime from page load to submit: ' + elapsed + 's\n\n' +
+      '<div class="ack-box">Registration number<br><span class="ack-number">' + regNo + '</span><br>' +
+      '<span style="font-size:11px;color:#666;">Rs.1,000 will be credited monthly to the registered bank account after verification (test mode).</span></div>';
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    nextBtn.disabled = true;
+  });
+
+  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
+
+  const otpBoxesInit = document.querySelectorAll('.otp-box');
+  otpBoxesInit.forEach((box, idx)=>{
+    box.addEventListener('input', ()=>{ if (box.value && idx < otpBoxesInit.length-1) otpBoxesInit[idx+1].focus(); });
+  });
+
+  updateUI();
+</script>
+</body>
+</html>

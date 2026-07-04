@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 9 — Income Certificate</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 720px; margin: 30px auto; padding: 0 20px; background: #eef1ec; color: #1a1a1a; }
+  h1 { font-size: 19px; margin-bottom:2px; }
+  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
+  .badge { display:inline-block; background:#5d4a1f; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
+  .steps { display:flex; gap:4px; margin-bottom:16px; }
+  .step-dot { flex:1; height:6px; background:#ddd6c2; border-radius:3px; }
+  .step-dot.active { background:#5d4a1f; }
+  .step-dot.done { background:#1e8e3e; }
+  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
+  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+  h3 { font-size:15px; border-bottom:2px solid #5d4a1f; padding-bottom:6px; margin-top:0; color:#5d4a1f; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight:normal; font-size:11px; color:#888; }
+  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:10px; }
+  .row > div { flex:1; }
+  .row3 > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .nav { display:flex; justify-content:space-between; margin-top:22px; }
+  button { padding: 9px 22px; background: #5d4a1f; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button.small { padding:5px 10px; font-size:12px; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  table { width:100%; border-collapse: collapse; margin-top:10px; }
+  table th, table td { border:1px solid #ddd; padding:6px 8px; font-size:12px; text-align:left; }
+  table th { background:#f4f1e8; }
+  table input { margin:0; padding:5px; font-size:12px; }
+  .total-row td { font-weight:bold; background:#faf8f0; }
+  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
+  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
+  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
+  .ack-box { background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; padding:16px; margin-top:16px; text-align:center; }
+  .ack-number { font-size:20px; font-weight:bold; letter-spacing:2px; color:#1e8e3e; font-family:'Courier New',monospace; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 9 · INCOME CERTIFICATE (SYNTHETIC)</span>
+  <h1>Application for Income Certificate</h1>
+  <div class="subtitle">Synthetic e-District style test form for QA purposes only.</div>
+  <div class="steps" id="stepsBar"></div>
+  <div class="step-label" id="stepLabel"></div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>1. Applicant details</h3>
+      <label for="full_name">Applicant full name</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="father_name">Father's/husband's name</label><input type="text" id="father_name" required></div>
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+      </div>
+      <div class="row">
+        <div><label for="category">Category</label><select id="category" required><option value="">Select</option><option>General</option><option>OBC</option><option>SC</option><option>ST</option></select></div>
+        <div><label for="aadhaar">Aadhaar number</label><input type="text" id="aadhaar" maxlength="12" required></div>
+      </div>
+      <div class="row">
+        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
+        <div><label for="email">Email address</label><input type="email" id="email"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>2. Address</h3>
+      <label for="house">House number/street</label>
+      <input type="text" id="house" required>
+      <div class="row row3">
+        <div><label for="village">Village/ward</label><input type="text" id="village" required></div>
+        <div><label for="tehsil">Tehsil</label><input type="text" id="tehsil" required></div>
+        <div><label for="district">District</label><input type="text" id="district" required></div>
+      </div>
+      <div class="row">
+        <div><label for="state">State</label><input type="text" id="state" required></div>
+        <div><label for="pin">Pincode</label><input type="text" id="pin" maxlength="6" required></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>3. Annual family income details</h3>
+      <table id="incomeTable">
+        <thead><tr><th>Source</th><th>Annual amount (Rs.)</th></tr></thead>
+        <tbody>
+          <tr><td>Agriculture</td><td><input type="number" class="income-field" id="inc_agri" value="0"></td></tr>
+          <tr><td>Salary/wages</td><td><input type="number" class="income-field" id="inc_salary" value="0"></td></tr>
+          <tr><td>Business/self-employment</td><td><input type="number" class="income-field" id="inc_business" value="0"></td></tr>
+          <tr><td>Other sources</td><td><input type="number" class="income-field" id="inc_other" value="0"></td></tr>
+          <tr class="total-row"><td>Total annual family income</td><td id="incomeTotal">Rs. 0</td></tr>
+        </tbody>
+      </table>
+      <label for="purpose">Purpose of certificate</label>
+      <select id="purpose" required>
+        <option value="">Select</option>
+        <option>Scholarship application</option>
+        <option>College admission (EWS quota)</option>
+        <option>Government scheme eligibility</option>
+        <option>Bank loan</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>4. Family member details</h3>
+      <table>
+        <thead><tr><th>Name</th><th>Relation</th><th>Occupation</th></tr></thead>
+        <tbody>
+          <tr><td><input type="text" id="fam1_name"></td><td><input type="text" id="fam1_relation" placeholder="e.g. Father"></td><td><input type="text" id="fam1_occ"></td></tr>
+          <tr><td><input type="text" id="fam2_name"></td><td><input type="text" id="fam2_relation" placeholder="e.g. Mother"></td><td><input type="text" id="fam2_occ"></td></tr>
+          <tr><td><input type="text" id="fam3_name"></td><td><input type="text" id="fam3_relation" placeholder="e.g. Sibling"></td><td><input type="text" id="fam3_occ"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel" id="panel-4">
+      <h3>5. Supporting documents</h3>
+      <label for="address_proof">Address proof</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB.</div>
+      <input type="file" id="address_proof" accept="application/pdf,image/jpeg">
+      <label for="income_proof">Income proof / salary slip (if applicable)</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB. Optional for agricultural/informal income.</div>
+      <input type="file" id="income_proof" accept="application/pdf,image/jpeg">
+      <label for="self_declaration">Self-declaration affidavit</label>
+      <div class="req-box">Format: PDF. Max size: 1 MB.</div>
+      <input type="file" id="self_declaration" accept="application/pdf">
+    </div>
+
+    <div class="panel" id="panel-5">
+      <h3>6. Issuing authority and declaration</h3>
+      <label for="office">Select issuing office</label>
+      <select id="office" required>
+        <option value="">Select</option>
+        <option>Tehsildar office</option>
+        <option>Sub-Divisional Magistrate (SDM) office</option>
+        <option>e-District common service center</option>
+      </select>
+      <div class="review-section-title" style="font-weight:bold; margin-top:14px;">Review summary</div>
+      <div id="reviewBox"></div>
+      <label>Security check</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <span class="captcha-text" id="captchaText"></span>
+        <button type="button" id="refreshCaptcha" class="secondary small">&#8635;</button>
+      </div>
+      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
+      <label style="display:flex; align-items:center; gap:8px; margin-top:14px;"><input type="checkbox" id="finalDeclare" style="width:auto;" required> I declare the above information is true and correct to the best of my knowledge</label>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  const stepNames = ['Applicant','Address','Income details','Family members','Documents','Authority & submit'];
+  const total = stepNames.length;
+  let current = 0;
+
+  const stepsBar = document.getElementById('stepsBar');
+  stepNames.forEach((n,i)=>{ const d=document.createElement('div'); d.className='step-dot'; d.id='dot-'+i; stepsBar.appendChild(d); });
+  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
+  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepLabel = document.getElementById('stepLabel');
+
+  function calcTotal(){
+    const ids = ['inc_agri','inc_salary','inc_business','inc_other'];
+    let total = 0;
+    ids.forEach(id => total += Number(document.getElementById(id).value || 0));
+    document.getElementById('incomeTotal').textContent = 'Rs. ' + total.toLocaleString('en-IN');
+  }
+  document.querySelectorAll('.income-field').forEach(f => f.addEventListener('input', calcTotal));
+  calcTotal();
+
+  let captchaValue = '';
+  function newCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('captchaText').textContent = captchaValue;
+  }
+  newCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
+    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Submit application' : 'Continue';
+    if (current === 5) buildReview();
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Applicant name','full_name'],["Father's name",'father_name'],['Category','category'],
+      ['District','district'],['State','state'],['Purpose','purpose'],['Issuing office','office']
+    ];
+    let html = '';
+    fields.forEach(([label,id])=>{
+      const el = document.getElementById(id);
+      html += `<div class="review-item"><span>${label}</span><span>${el.value || '(empty)'}</span></div>`;
+    });
+    html += `<div class="review-item"><span>Total declared income</span><span>${document.getElementById('incomeTotal').textContent}</span></div>`;
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red'; inp.focus(); return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current === 5){
+      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (captchaInput !== captchaValue){
+        alert('Captcha does not match.'); newCaptcha();
+        document.getElementById('captchaInput').value = ''; return;
+      }
+    }
+    if (current < total-1){ current++; updateUI(); return; }
+
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const appNo = 'INC' + Math.floor(10000000 + Math.random()*90000000);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = 'APPLICATION SUBMITTED\nTime from page load to submit: ' + elapsed + 's\n\n' +
+      '<div class="ack-box">Application number<br><span class="ack-number">' + appNo + '</span><br>' +
+      '<span style="font-size:11px;color:#666;">Certificate will be issued within 7 working days (test mode).</span></div>';
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    nextBtn.disabled = true;
+  });
+
+  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
+
+  updateUI();
+</script>
+</body>
+</html>

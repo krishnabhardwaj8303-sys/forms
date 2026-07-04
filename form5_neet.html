@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 5 — NEET/NTA style</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 720px; margin: 30px auto; padding: 0 20px; background: #eef1f5; color: #1a1a1a; }
+  h1 { font-size: 19px; margin-bottom:2px; }
+  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
+  .badge { display:inline-block; background:#0b4f8a; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
+  .steps { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+  .step-dot { flex:1; min-width:30px; height:6px; background:#d3d9e0; border-radius:3px; }
+  .step-dot.active { background:#0b4f8a; }
+  .step-dot.done { background:#1e8e3e; }
+  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
+  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+  h3 { font-size:15px; border-bottom:2px solid #0b4f8a; padding-bottom:6px; margin-top:0; color:#0b4f8a; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight:normal; font-size:11px; color:#888; }
+  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:10px; }
+  .row > div { flex:1; }
+  .row3 > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .radio-group label, .checkbox-group label { display:inline-block; font-weight:normal; margin-right:14px; font-size:13px; }
+  .nav { display:flex; justify-content:space-between; margin-top:22px; }
+  button { padding: 9px 22px; background: #0b4f8a; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
+  .review-section-title { font-weight:bold; color:#0b4f8a; margin-top:14px; font-size:13px; }
+  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
+  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
+  .otp-row { display:flex; gap:6px; margin-top:6px; }
+  .otp-row input { text-align:center; font-size:16px; padding:8px 0; }
+  .fee-box { background:#f0f7ff; border:1px solid #b6d4f5; border-radius:6px; padding:12px 16px; margin-top:10px; font-size:13px; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 5 · NEET/NTA-STYLE (8 STEPS)</span>
+  <h1>National Eligibility cum Entrance Test — Application Form</h1>
+  <div class="subtitle">This is a synthetic test form for QA purposes only. Not affiliated with NTA.</div>
+  <div class="steps" id="stepsBar"></div>
+  <div class="step-label" id="stepLabel"></div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>1. Personal details</h3>
+      <label for="full_name">Candidate full name (as per Class 10 certificate)</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+        <div><label for="gender">Gender</label>
+          <select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Transgender</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div><label for="nationality">Nationality</label>
+          <select id="nationality" required><option value="">Select</option><option>Indian</option><option>NRI</option><option>OCI</option><option>Foreign National</option></select>
+        </div>
+        <div><label for="category">Category</label>
+          <select id="category" required><option value="">Select</option><option>General</option><option>EWS</option><option>OBC-NCL</option><option>SC</option><option>ST</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div><label for="pwd">PwD (Person with Disability)</label>
+          <select id="pwd" required><option value="">Select</option><option>Yes</option><option>No</option></select>
+        </div>
+        <div><label for="aadhaar">Aadhaar / ID number</label><input type="text" id="aadhaar" maxlength="12" required></div>
+      </div>
+      <div class="row">
+        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
+        <div><label for="email">Email address</label><input type="email" id="email" required></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>2. Parent / guardian details</h3>
+      <div class="row">
+        <div><label for="father_name">Father's name</label><input type="text" id="father_name" required></div>
+        <div><label for="mother_name">Mother's name</label><input type="text" id="mother_name" required></div>
+      </div>
+      <div class="row">
+        <div><label for="father_occupation">Father's occupation</label><input type="text" id="father_occupation"></div>
+        <div><label for="annual_income">Annual family income</label>
+          <select id="annual_income" required><option value="">Select</option><option>Below 1 lakh</option><option>1-5 lakh</option><option>5-8 lakh</option><option>Above 8 lakh</option></select>
+        </div>
+      </div>
+      <label for="guardian_phone">Parent/guardian mobile number</label>
+      <input type="tel" id="guardian_phone" maxlength="10" required>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>3. Address</h3>
+      <label for="perm_address">Permanent address</label>
+      <textarea id="perm_address" rows="2" required></textarea>
+      <div class="row row3">
+        <div><label for="perm_state">State</label><input type="text" id="perm_state" required></div>
+        <div><label for="perm_city">City/district</label><input type="text" id="perm_city" required></div>
+        <div><label for="perm_pin">Pincode</label><input type="text" id="perm_pin" maxlength="6" required></div>
+      </div>
+      <div class="checkbox-group" style="margin-top:14px;">
+        <label><input type="checkbox" id="sameAddress" style="width:auto;"> Correspondence address same as permanent address</label>
+      </div>
+      <div id="correspondenceBlock">
+        <label for="corr_address">Correspondence address</label>
+        <textarea id="corr_address" rows="2"></textarea>
+        <div class="row row3">
+          <div><label for="corr_state">State</label><input type="text" id="corr_state"></div>
+          <div><label for="corr_city">City/district</label><input type="text" id="corr_city"></div>
+          <div><label for="corr_pin">Pincode</label><input type="text" id="corr_pin" maxlength="6"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>4. Academic details</h3>
+      <label style="margin-top:0;">Class 10</label>
+      <div class="row row3">
+        <div><input type="text" id="c10_board" placeholder="Board name" required></div>
+        <div><input type="text" id="c10_year" placeholder="Passing year" required></div>
+        <div><input type="text" id="c10_roll" placeholder="Roll number" required></div>
+      </div>
+      <label>Class 12 / qualifying examination</label>
+      <div class="row">
+        <div><label for="c12_status" class="hint">Status</label>
+          <select id="c12_status" required><option value="">Select</option><option>Passed</option><option>Appearing</option></select>
+        </div>
+        <div><label for="c12_board" class="hint">Board name</label><input type="text" id="c12_board" required></div>
+      </div>
+      <div class="row row3">
+        <div><input type="text" id="c12_year" placeholder="Passing/appearing year" required></div>
+        <div><input type="text" id="c12_roll" placeholder="Roll number"></div>
+        <div><input type="text" id="c12_percent" placeholder="PCB % (if passed)"></div>
+      </div>
+      <label>Subjects in Class 12</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" style="width:auto;" id="sub_physics" checked disabled> Physics</label>
+        <label><input type="checkbox" style="width:auto;" id="sub_chem" checked disabled> Chemistry</label>
+        <label><input type="checkbox" style="width:auto;" id="sub_bio" checked disabled> Biology/Biotechnology</label>
+        <label><input type="checkbox" style="width:auto;" id="sub_english"> English</label>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-4">
+      <h3>5. Exam center preference</h3>
+      <label for="medium">Medium of question paper</label>
+      <select id="medium" required><option value="">Select</option><option>English</option><option>Hindi</option><option>Regional language</option></select>
+      <label for="pref1">City preference 1</label>
+      <select id="pref1" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
+      <label for="pref2">City preference 2</label>
+      <select id="pref2" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
+      <label for="pref3">City preference 3</label>
+      <select id="pref3" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
+    </div>
+
+    <div class="panel" id="panel-5">
+      <h3>6. Photo, signature and thumb impression</h3>
+      <label for="photo">Passport-size photograph</label>
+      <div class="req-box">Format: JPEG only. Size: 10 KB - 200 KB. Dimensions: 3.5 cm x 4.5 cm (width x height). White background, taken within last 6 months.</div>
+      <input type="file" id="photo" accept="image/jpeg">
+      <label for="signature">Signature</label>
+      <div class="req-box">Format: JPEG only. Size: 4 KB - 30 KB. Dimensions: 3.5 cm x 1.5 cm. Signed on white paper with black ink.</div>
+      <input type="file" id="signature" accept="image/jpeg">
+      <label for="thumb">Left hand thumb impression</label>
+      <div class="req-box">Format: JPEG only. Size: 10 KB - 50 KB. Impression taken with blue/black ink on white paper.</div>
+      <input type="file" id="thumb" accept="image/jpeg">
+    </div>
+
+    <div class="panel" id="panel-6">
+      <h3>7. Declaration and security check</h3>
+      <div class="checkbox-group">
+        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare1" style="width:auto;" required> I declare that all information provided is true to the best of my knowledge.</label>
+        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare2" style="width:auto;" required> I agree to abide by the rules and regulations of the examining body.</label>
+      </div>
+      <label>Security check</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <span class="captcha-text" id="captchaText"></span>
+        <button type="button" id="refreshCaptcha" class="secondary">&#8635;</button>
+      </div>
+      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
+    </div>
+
+    <div class="panel" id="panel-7">
+      <h3>8. Fee payment and final submit</h3>
+      <div class="fee-box" id="feeBox">Calculating fee based on category...</div>
+      <div class="review-section-title">Review summary</div>
+      <div id="reviewBox"></div>
+      <label style="margin-top:16px;">Enter 6-digit OTP sent to your mobile</label>
+      <div class="otp-row">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+      </div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Test mode: any 6 digits accepted.</div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  const stepNames = ['Personal','Parent/Guardian','Address','Academic','Exam center','Documents','Declaration','Payment'];
+  const total = stepNames.length;
+  let current = 0;
+
+  const stepsBar = document.getElementById('stepsBar');
+  stepNames.forEach((n,i)=>{
+    const d = document.createElement('div');
+    d.className = 'step-dot'; d.id = 'dot-'+i;
+    stepsBar.appendChild(d);
+  });
+  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
+  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepLabel = document.getElementById('stepLabel');
+
+  let captchaValue = '';
+  function newCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('captchaText').textContent = captchaValue;
+  }
+  newCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+
+  document.getElementById('sameAddress').addEventListener('change', function(){
+    document.getElementById('correspondenceBlock').style.display = this.checked ? 'none' : 'block';
+  });
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
+    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Final submit' : 'Save and continue';
+    if (current === 7){ buildReview(); calcFee(); }
+  }
+
+  function calcFee(){
+    const cat = document.getElementById('category').value;
+    let fee = 1700;
+    if (cat === 'SC' || cat === 'ST' || cat === 'PwD') fee = 1000;
+    else if (cat === 'OBC-NCL' || cat === 'EWS') fee = 1600;
+    document.getElementById('feeBox').textContent = 'Application fee for category "' + (cat||'General') + '": Rs. ' + fee + ' (test mode — no real payment will be taken)';
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Full name','full_name'],['DOB','dob'],['Gender','gender'],['Category','category'],
+      ['Father name','father_name'],['Mother name','mother_name'],
+      ['Permanent address','perm_address'],['Class 12 board','c12_board'],
+      ['Exam city preference 1','pref1']
+    ];
+    let html = '';
+    fields.forEach(([label,id])=>{
+      const el = document.getElementById(id);
+      html += `<div class="review-item"><span>${label}</span><span>${el.value || '(empty)'}</span></div>`;
+    });
+    const photo = document.getElementById('photo').files[0];
+    const sig = document.getElementById('signature').files[0];
+    const thumb = document.getElementById('thumb').files[0];
+    html += `<div class="review-item"><span>Photo</span><span>${photo?photo.name:'(not uploaded)'}</span></div>`;
+    html += `<div class="review-item"><span>Signature</span><span>${sig?sig.name:'(not uploaded)'}</span></div>`;
+    html += `<div class="review-item"><span>Thumb impression</span><span>${thumb?thumb.name:'(not uploaded)'}</span></div>`;
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red'; inp.focus(); return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current === 6){
+      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (captchaInput !== captchaValue){
+        alert('Captcha does not match. Please try again.');
+        newCaptcha();
+        document.getElementById('captchaInput').value = '';
+        return;
+      }
+    }
+    if (current < total-1){ current++; updateUI(); return; }
+
+    const otpBoxes = document.querySelectorAll('.otp-box');
+    const otp = Array.from(otpBoxes).map(b=>b.value).join('');
+    if (otp.length !== 6){ alert('Enter all 6 OTP digits (any digits work in test mode).'); return; }
+
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.textContent = 'APPLICATION SUBMITTED\nTime from page load to final submit: ' + elapsed + 's\nSteps completed: ' + total + '\nOTP entered: ' + otp;
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    nextBtn.disabled = true;
+  });
+
+  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
+
+  const otpBoxesInit = document.querySelectorAll('.otp-box');
+  otpBoxesInit.forEach((box, idx)=>{
+    box.addEventListener('input', ()=>{ if (box.value && idx < otpBoxesInit.length-1) otpBoxesInit[idx+1].focus(); });
+  });
+
+  updateUI();
+</script>
+</body>
+</html>

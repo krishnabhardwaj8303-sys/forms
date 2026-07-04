@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 6 — NDA style</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 720px; margin: 30px auto; padding: 0 20px; background: #eef1ea; color: #1a1a1a; }
+  h1 { font-size: 19px; margin-bottom:2px; }
+  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
+  .badge { display:inline-block; background:#2c5f2d; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
+  .steps { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
+  .step-dot { flex:1; min-width:30px; height:6px; background:#d3d9c9; border-radius:3px; }
+  .step-dot.active { background:#2c5f2d; }
+  .step-dot.done { background:#8a9c1e; }
+  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
+  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+  h3 { font-size:15px; border-bottom:2px solid #2c5f2d; padding-bottom:6px; margin-top:0; color:#2c5f2d; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight:normal; font-size:11px; color:#888; }
+  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:10px; }
+  .row > div { flex:1; }
+  .row3 > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .radio-group label, .checkbox-group label { display:inline-block; font-weight:normal; margin-right:14px; font-size:13px; }
+  .nav { display:flex; justify-content:space-between; margin-top:22px; }
+  button { padding: 9px 22px; background: #2c5f2d; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
+  .review-section-title { font-weight:bold; color:#2c5f2d; margin-top:14px; font-size:13px; }
+  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
+  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
+  .otp-row { display:flex; gap:6px; margin-top:6px; }
+  .otp-row input { text-align:center; font-size:16px; padding:8px 0; }
+  .fee-box { background:#f2f7ea; border:1px solid #cddcae; border-radius:6px; padding:12px 16px; margin-top:10px; font-size:13px; }
+  .academy-pref { display:flex; gap:10px; margin-top:8px; }
+  .academy-pref select { flex:1; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 6 · NDA-STYLE (8 STEPS)</span>
+  <h1>National Defence Academy — Application Form</h1>
+  <div class="subtitle">This is a synthetic test form for QA purposes only. Not affiliated with UPSC/NDA.</div>
+  <div class="steps" id="stepsBar"></div>
+  <div class="step-label" id="stepLabel"></div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>1. Personal details</h3>
+      <label for="full_name">Candidate full name</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+        <div><label for="gender">Gender</label><select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="marital">Marital status</label>
+          <select id="marital" required><option value="">Select</option><option>Unmarried</option></select>
+          <div class="hint">NDA requires candidates to be unmarried at the time of application.</div>
+        </div>
+        <div><label for="domicile">Domicile state</label><input type="text" id="domicile" required></div>
+      </div>
+      <div class="row">
+        <div><label for="religion">Religion (optional)</label><input type="text" id="religion"></div>
+        <div><label for="category">Category</label>
+          <select id="category" required><option value="">Select</option><option>General</option><option>EWS</option><option>OBC-NCL</option><option>SC</option><option>ST</option></select>
+        </div>
+      </div>
+      <div class="row">
+        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
+        <div><label for="email">Email address</label><input type="email" id="email" required></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>2. Physical details and identification marks</h3>
+      <div class="row row3">
+        <div><label for="height">Height (cm)</label><input type="number" id="height" required></div>
+        <div><label for="weight">Weight (kg)</label><input type="number" id="weight" required></div>
+        <div><label for="chest">Chest expansion (cm)</label><input type="text" id="chest" placeholder="e.g. 81-86"></div>
+      </div>
+      <label for="mark1">Identification mark 1</label>
+      <input type="text" id="mark1" placeholder="e.g. mole on left cheek" required>
+      <label for="mark2">Identification mark 2</label>
+      <input type="text" id="mark2" placeholder="e.g. scar on right hand" required>
+      <label for="blood_group">Blood group</label>
+      <select id="blood_group" required><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>3. Educational qualification</h3>
+      <label>Class 12 / qualifying examination</label>
+      <div class="row">
+        <div><label for="c12_status" class="hint">Status</label>
+          <select id="c12_status" required><option value="">Select</option><option>Passed</option><option>Appearing</option></select>
+        </div>
+        <div><label for="c12_board" class="hint">Board name</label><input type="text" id="c12_board" required></div>
+      </div>
+      <div class="row row3">
+        <div><input type="text" id="c12_year" placeholder="Passing/appearing year" required></div>
+        <div><input type="text" id="c12_roll" placeholder="Roll number"></div>
+        <div><input type="text" id="c12_percent" placeholder="Percentage (if passed)"></div>
+      </div>
+      <label for="stream">Stream in Class 12</label>
+      <select id="stream" required>
+        <option value="">Select</option>
+        <option>Science (Physics + Mathematics)</option>
+        <option>Any stream (for Army wing only)</option>
+      </select>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>4. NCC details (optional)</h3>
+      <label><input type="checkbox" id="hasNcc" style="width:auto;"> I hold an NCC certificate</label>
+      <div id="nccBlock" style="display:none;">
+        <label for="ncc_cert">Certificate type</label>
+        <select id="ncc_cert"><option value="">Select</option><option>A Certificate</option><option>B Certificate</option><option>C Certificate</option></select>
+        <label for="ncc_wing">Wing</label>
+        <select id="ncc_wing"><option value="">Select</option><option>Army Wing</option><option>Naval Wing</option><option>Air Wing</option></select>
+        <label for="ncc_unit">Unit name</label>
+        <input type="text" id="ncc_unit">
+      </div>
+    </div>
+
+    <div class="panel" id="panel-4">
+      <h3>5. Academy preference and exam center</h3>
+      <label>Rank your academy preference (1 = highest priority)</label>
+      <div class="academy-pref">
+        <select id="pref_1"><option value="">1st choice</option><option>Army</option><option>Navy</option><option>Air Force</option></select>
+        <select id="pref_2"><option value="">2nd choice</option><option>Army</option><option>Navy</option><option>Air Force</option></select>
+        <select id="pref_3"><option value="">3rd choice</option><option>Army</option><option>Navy</option><option>Air Force</option></select>
+      </div>
+      <label for="exam_city">Preferred exam center city</label>
+      <select id="exam_city" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Bhopal</option><option>Pune</option><option>Chennai</option><option>Guwahati</option></select>
+    </div>
+
+    <div class="panel" id="panel-5">
+      <h3>6. Parent/guardian and address</h3>
+      <div class="row">
+        <div><label for="father_name">Father's name</label><input type="text" id="father_name" required></div>
+        <div><label for="mother_name">Mother's name</label><input type="text" id="mother_name" required></div>
+      </div>
+      <label for="guardian_occupation">Parent/guardian occupation</label>
+      <input type="text" id="guardian_occupation">
+      <label for="address">Permanent address</label>
+      <textarea id="address" rows="2" required></textarea>
+      <div class="row row3">
+        <div><label for="state">State</label><input type="text" id="state" required></div>
+        <div><label for="city">City/district</label><input type="text" id="city" required></div>
+        <div><label for="pin">Pincode</label><input type="text" id="pin" maxlength="6" required></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-6">
+      <h3>7. Photo, signature and declaration</h3>
+      <label for="photo">Passport-size photograph</label>
+      <div class="req-box">Format: JPEG only. Size: 10 KB - 300 KB. White/light background, taken within last 3 months, without cap/sunglasses.</div>
+      <input type="file" id="photo" accept="image/jpeg">
+      <label for="signature">Signature</label>
+      <div class="req-box">Format: JPEG only. Size: 4 KB - 40 KB. Signed on white paper with black/blue ink.</div>
+      <input type="file" id="signature" accept="image/jpeg">
+      <div class="checkbox-group" style="margin-top:14px;">
+        <label style="display:block;"><input type="checkbox" id="declare1" style="width:auto;" required> I declare that I meet the physical and medical standards prescribed for this examination.</label>
+        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare2" style="width:auto;" required> I agree to abide by the rules and regulations of the examining authority.</label>
+      </div>
+      <label>Security check</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <span class="captcha-text" id="captchaText"></span>
+        <button type="button" id="refreshCaptcha" class="secondary">&#8635;</button>
+      </div>
+      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
+    </div>
+
+    <div class="panel" id="panel-7">
+      <h3>8. Fee payment and final submit</h3>
+      <div class="fee-box" id="feeBox">Calculating fee based on category...</div>
+      <div class="review-section-title">Review summary</div>
+      <div id="reviewBox"></div>
+      <label style="margin-top:16px;">Enter 6-digit OTP sent to your mobile</label>
+      <div class="otp-row">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
+      </div>
+      <div style="font-size:11px;color:#888;margin-top:4px;">Test mode: any 6 digits accepted.</div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  const stepNames = ['Personal','Physical/ID marks','Education','NCC (optional)','Academy/exam center','Parent/Address','Documents','Payment'];
+  const total = stepNames.length;
+  let current = 0;
+
+  const stepsBar = document.getElementById('stepsBar');
+  stepNames.forEach((n,i)=>{
+    const d = document.createElement('div');
+    d.className = 'step-dot'; d.id = 'dot-'+i;
+    stepsBar.appendChild(d);
+  });
+  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
+  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepLabel = document.getElementById('stepLabel');
+
+  let captchaValue = '';
+  function newCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('captchaText').textContent = captchaValue;
+  }
+  newCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+
+  document.getElementById('hasNcc').addEventListener('change', function(){
+    document.getElementById('nccBlock').style.display = this.checked ? 'block' : 'none';
+  });
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
+    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Final submit' : 'Save and continue';
+    if (current === 7){ buildReview(); calcFee(); }
+  }
+
+  function calcFee(){
+    const cat = document.getElementById('category').value;
+    let fee = 100;
+    if (cat === 'SC' || cat === 'ST') fee = 0;
+    document.getElementById('feeBox').textContent = 'Application fee for category "' + (cat||'General') + '": Rs. ' + fee + ' (test mode — no real payment will be taken)';
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Full name','full_name'],['DOB','dob'],['Gender','gender'],['Category','category'],
+      ['Height','height'],['Weight','weight'],
+      ['Class 12 board','c12_board'],['Stream','stream'],
+      ['1st academy choice','pref_1'],['Exam city','exam_city'],
+      ['Father name','father_name'],['Address','address']
+    ];
+    let html = '';
+    fields.forEach(([label,id])=>{
+      const el = document.getElementById(id);
+      html += `<div class="review-item"><span>${label}</span><span>${el.value || '(empty)'}</span></div>`;
+    });
+    const photo = document.getElementById('photo').files[0];
+    const sig = document.getElementById('signature').files[0];
+    html += `<div class="review-item"><span>Photo</span><span>${photo?photo.name:'(not uploaded)'}</span></div>`;
+    html += `<div class="review-item"><span>Signature</span><span>${sig?sig.name:'(not uploaded)'}</span></div>`;
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red'; inp.focus(); return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current === 6){
+      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (captchaInput !== captchaValue){
+        alert('Captcha does not match. Please try again.');
+        newCaptcha();
+        document.getElementById('captchaInput').value = '';
+        return;
+      }
+    }
+    if (current < total-1){ current++; updateUI(); return; }
+
+    const otpBoxes = document.querySelectorAll('.otp-box');
+    const otp = Array.from(otpBoxes).map(b=>b.value).join('');
+    if (otp.length !== 6){ alert('Enter all 6 OTP digits (any digits work in test mode).'); return; }
+
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.textContent = 'APPLICATION SUBMITTED\nTime from page load to final submit: ' + elapsed + 's\nSteps completed: ' + total + '\nOTP entered: ' + otp;
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    nextBtn.disabled = true;
+  });
+
+  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
+
+  const otpBoxesInit = document.querySelectorAll('.otp-box');
+  otpBoxesInit.forEach((box, idx)=>{
+    box.addEventListener('input', ()=>{ if (box.value && idx < otpBoxesInit.length-1) otpBoxesInit[idx+1].focus(); });
+  });
+
+  updateUI();
+</script>
+</body>
+</html>

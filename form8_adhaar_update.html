@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 8 — Aadhaar enrollment/update</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; padding: 0 20px; background: #eef1f5; color: #1a1a1a; }
+  h1 { font-size: 19px; margin-bottom:2px; }
+  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
+  .badge { display:inline-block; background:#00695c; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
+  .steps { display:flex; gap:4px; margin-bottom:16px; }
+  .step-dot { flex:1; height:6px; background:#c9d9d6; border-radius:3px; }
+  .step-dot.active { background:#00695c; }
+  .step-dot.done { background:#1e8e3e; }
+  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
+  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+  h3 { font-size:15px; border-bottom:2px solid #00695c; padding-bottom:6px; margin-top:0; color:#00695c; }
+  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight:normal; font-size:11px; color:#888; }
+  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:10px; }
+  .row > div { flex:1; }
+  .row3 > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .radio-group label, .checkbox-group label { display:inline-block; font-weight:normal; margin-right:14px; font-size:13px; }
+  .option-card { border:1px solid #ccc; border-radius:6px; padding:12px; margin-top:10px; cursor:pointer; }
+  .option-card.selected { border-color:#00695c; background:#f0f7f5; }
+  .nav { display:flex; justify-content:space-between; margin-top:22px; }
+  button { padding: 9px 22px; background: #00695c; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
+  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
+  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
+  .slot-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:8px; }
+  .slot { border:1px solid #ccc; border-radius:4px; padding:8px; text-align:center; font-size:12px; cursor:pointer; }
+  .slot.selected { background:#00695c; color:#fff; border-color:#00695c; }
+  .ack-box { background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; padding:16px; margin-top:16px; text-align:center; }
+  .ack-number { font-size:20px; font-weight:bold; letter-spacing:2px; color:#1e8e3e; font-family:'Courier New',monospace; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 8 · AADHAAR ENROLLMENT/UPDATE (SYNTHETIC)</span>
+  <h1>Aadhaar Enrollment and Update — Application</h1>
+  <div class="subtitle">Synthetic test form for QA purposes only. No real UIDAI data is processed or stored.</div>
+  <div class="steps" id="stepsBar"></div>
+  <div class="step-label" id="stepLabel"></div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>1. Enrollment type</h3>
+      <div class="option-card selected" data-val="new" onclick="selectType(this,'new')">
+        <strong>New enrollment</strong>
+        <div class="hint">I do not have an Aadhaar number and want to enroll for the first time.</div>
+      </div>
+      <div class="option-card" data-val="update" onclick="selectType(this,'update')">
+        <strong>Update existing Aadhaar</strong>
+        <div class="hint">I already have an Aadhaar number and want to update demographic details.</div>
+      </div>
+      <div id="existingAadhaarBlock" style="display:none;">
+        <label for="existing_aadhaar">Existing Aadhaar number</label>
+        <input type="text" id="existing_aadhaar" maxlength="12">
+      </div>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>2. Personal details</h3>
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+        <div><label for="gender">Gender</label><select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Transgender</option></select></div>
+      </div>
+      <div class="row">
+        <div><label for="relation_type">Relationship</label><select id="relation_type" required><option value="">Select</option><option>S/O (Son of)</option><option>D/O (Daughter of)</option><option>W/O (Wife of)</option></select></div>
+        <div><label for="relation_name">Relative's name</label><input type="text" id="relation_name" required></div>
+      </div>
+      <div class="row">
+        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
+        <div><label for="email">Email address (optional)</label><input type="email" id="email"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>3. Address details</h3>
+      <label for="house">House/building/street</label>
+      <input type="text" id="house" required>
+      <div class="row row3">
+        <div><label for="village">Village/town</label><input type="text" id="village" required></div>
+        <div><label for="district">District</label><input type="text" id="district" required></div>
+        <div><label for="pin">Pincode</label><input type="text" id="pin" maxlength="6" required></div>
+      </div>
+      <div class="row">
+        <div><label for="state">State</label><input type="text" id="state" required></div>
+        <div><label for="post_office">Post office</label><input type="text" id="post_office"></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>4. Supporting documents</h3>
+      <label for="poi_type">Proof of identity (POI) document type</label>
+      <select id="poi_type" required>
+        <option value="">Select</option><option>Passport</option><option>Voter ID</option><option>Driving Licence</option><option>PAN Card</option><option>Ration Card</option>
+      </select>
+      <label for="poi_file">Upload POI document</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB.</div>
+      <input type="file" id="poi_file" accept="application/pdf,image/jpeg">
+      <label for="poa_type">Proof of address (POA) document type</label>
+      <select id="poa_type" required>
+        <option value="">Select</option><option>Electricity bill</option><option>Bank passbook</option><option>Rent agreement</option><option>Ration Card</option>
+      </select>
+      <label for="poa_file">Upload POA document</label>
+      <div class="req-box">Format: PDF or JPEG. Max size: 2 MB.</div>
+      <input type="file" id="poa_file" accept="application/pdf,image/jpeg">
+    </div>
+
+    <div class="panel" id="panel-4">
+      <h3>5. Book biometric appointment</h3>
+      <label for="center">Aadhaar Seva Kendra</label>
+      <select id="center" required>
+        <option value="">Select nearest center</option>
+        <option>Aadhaar Seva Kendra - Sector 12</option>
+        <option>Aadhaar Seva Kendra - MG Road</option>
+        <option>Aadhaar Seva Kendra - Civil Lines</option>
+      </select>
+      <label for="appt_date">Appointment date</label>
+      <input type="date" id="appt_date" required>
+      <label>Preferred time slot</label>
+      <div class="slot-grid" id="slotGrid">
+        <div class="slot" data-slot="10:00 AM">10:00 AM</div>
+        <div class="slot" data-slot="11:30 AM">11:30 AM</div>
+        <div class="slot" data-slot="1:00 PM">1:00 PM</div>
+        <div class="slot" data-slot="2:30 PM">2:30 PM</div>
+        <div class="slot" data-slot="4:00 PM">4:00 PM</div>
+        <div class="slot" data-slot="5:30 PM">5:30 PM</div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-5">
+      <h3>6. Review and submit</h3>
+      <div id="reviewBox"></div>
+      <label>Security check</label>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
+        <span class="captcha-text" id="captchaText"></span>
+        <button type="button" id="refreshCaptcha" class="secondary">&#8635;</button>
+      </div>
+      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
+      <div class="checkbox-group" style="margin-top:14px;">
+        <label style="display:block;"><input type="checkbox" id="finalDeclare" style="width:auto;" required> I declare the information provided is true and correct</label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  const stepNames = ['Enrollment type','Personal details','Address','Documents','Appointment','Review'];
+  const total = stepNames.length;
+  let current = 0;
+  let enrollType = 'new';
+  let selectedSlot = '';
+
+  const stepsBar = document.getElementById('stepsBar');
+  stepNames.forEach((n,i)=>{ const d=document.createElement('div'); d.className='step-dot'; d.id='dot-'+i; stepsBar.appendChild(d); });
+  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
+  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepLabel = document.getElementById('stepLabel');
+
+  function selectType(el, val){
+    document.querySelectorAll('.option-card').forEach(c=>c.classList.remove('selected'));
+    el.classList.add('selected');
+    enrollType = val;
+    document.getElementById('existingAadhaarBlock').style.display = val === 'update' ? 'block' : 'none';
+  }
+
+  document.getElementById('slotGrid').addEventListener('click', (e)=>{
+    if (e.target.classList.contains('slot')){
+      document.querySelectorAll('.slot').forEach(s=>s.classList.remove('selected'));
+      e.target.classList.add('selected');
+      selectedSlot = e.target.dataset.slot;
+    }
+  });
+
+  let captchaValue = '';
+  function newCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
+    document.getElementById('captchaText').textContent = captchaValue;
+  }
+  newCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
+    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Submit application' : 'Continue';
+    if (current === 5) buildReview();
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Enrollment type', null, enrollType === 'new' ? 'New enrollment' : 'Update existing'],
+      ['Full name','full_name'],['Date of birth','dob'],['Gender','gender'],
+      ['Address','house'],['District','district'],['State','state'],
+      ['Appointment center','center'],['Appointment date','appt_date'],
+      ['Time slot', null, selectedSlot || '(not selected)']
+    ];
+    let html = '';
+    fields.forEach(([label,id,override])=>{
+      const val = override !== undefined ? override : (document.getElementById(id).value || '(empty)');
+      html += `<div class="review-item"><span>${label}</span><span>${val}</span></div>`;
+    });
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red'; inp.focus(); return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current === 4 && !selectedSlot){
+      alert('Please select a time slot.'); return;
+    }
+    if (current === 5){
+      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
+      if (captchaInput !== captchaValue){
+        alert('Captcha does not match.'); newCaptcha();
+        document.getElementById('captchaInput').value = ''; return;
+      }
+    }
+    if (current < total-1){ current++; updateUI(); return; }
+
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const urn = 'URN' + Math.floor(1000000000 + Math.random()*9000000000);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.innerHTML = 'APPLICATION SUBMITTED\nTime from page load to submit: ' + elapsed + 's\n\n' +
+      '<div class="ack-box">Update Request Number (URN)<br><span class="ack-number">' + urn + '</span><br>' +
+      '<span style="font-size:11px;color:#666;">Visit the selected Aadhaar Seva Kendra on ' + (document.getElementById('appt_date').value||'') + ' at ' + selectedSlot + ' (test mode).</span></div>';
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    nextBtn.disabled = true;
+  });
+
+  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
+
+  updateUI();
+</script>
+</body>
+</html>

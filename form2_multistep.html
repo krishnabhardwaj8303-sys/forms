@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 2 — Multi-step</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; color: #222; }
+  h1 { font-size: 20px; }
+  .badge { display:inline-block; background:#333; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:16px;}
+  .card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .steps { display:flex; gap:6px; margin-bottom:20px; }
+  .step-dot { flex:1; height:6px; background:#ddd; border-radius:3px; }
+  .step-dot.active { background:#2563eb; }
+  .step-dot.done { background:#16a34a; }
+  label { display: block; margin-top: 14px; font-weight: bold; font-size: 14px; }
+  input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:12px; }
+  .row > div { flex:1; }
+  .panel { display:none; }
+  .panel.active { display:block; }
+  .nav { display:flex; justify-content:space-between; margin-top:24px; }
+  button { padding: 10px 24px; background: #2563eb; color: #fff; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; }
+  button.secondary { background:#e5e7eb; color:#222; }
+  button:disabled { opacity:0.5; cursor:not-allowed; }
+  canvas#sigpad { border:1px dashed #999; border-radius:4px; touch-action:none; background:#fff; }
+  .review-item { display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #eee; font-size:14px; }
+  #timer { font-size:12px; color:#666; margin-top:8px; }
+  #result { display:none; margin-top:20px; padding:16px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:13px; white-space:pre-wrap; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 2 · MULTI-STEP</span>
+  <h1>Exam Application — Multi-step Form</h1>
+  <div class="steps">
+    <div class="step-dot active" id="dot-0"></div>
+    <div class="step-dot" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+  </div>
+  <div class="card">
+
+    <div class="panel active" id="panel-0">
+      <h3>Step 1: Personal details</h3>
+      <label for="full_name">Full name</label>
+      <input type="text" id="full_name" required>
+      <div class="row">
+        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
+        <div><label for="father_name">Father's name</label><input type="text" id="father_name" required></div>
+      </div>
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" required>
+    </div>
+
+    <div class="panel" id="panel-1">
+      <h3>Step 2: Address</h3>
+      <label for="address">Address line</label>
+      <textarea id="address" rows="2" required></textarea>
+      <div class="row">
+        <div><label for="city">City</label><input type="text" id="city" required></div>
+        <div><label for="state">State</label><input type="text" id="state" required></div>
+        <div><label for="pincode">Pincode</label><input type="text" id="pincode" required></div>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-2">
+      <h3>Step 3: Documents and signature</h3>
+      <label for="photo">Upload photo</label>
+      <input type="file" id="photo" accept="image/*">
+      <label for="idproof">Upload ID proof (PDF)</label>
+      <input type="file" id="idproof" accept="application/pdf">
+      <label>Draw your signature below</label>
+      <canvas id="sigpad" width="560" height="140"></canvas><br>
+      <button type="button" class="secondary" id="clearSig" style="margin-top:8px;">Clear signature</button>
+    </div>
+
+    <div class="panel" id="panel-3">
+      <h3>Step 4: Review and submit</h3>
+      <div id="reviewBox"></div>
+      <div style="margin-top:14px;">
+        <label><input type="checkbox" id="declare" required style="width:auto; display:inline;"> I confirm the above details are correct</label>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
+      <button type="button" id="nextBtn">Next</button>
+    </div>
+    <div id="timer">Timer running...</div>
+    <div id="result"></div>
+  </div>
+
+<script>
+  const startTime = performance.now();
+  let current = 0;
+  const total = 4;
+  const panels = [0,1,2,3].map(i => document.getElementById('panel-'+i));
+  const dots = [0,1,2,3].map(i => document.getElementById('dot-'+i));
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function updateUI(){
+    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
+    dots.forEach((d,i)=>{
+      d.classList.toggle('active', i===current);
+      d.classList.toggle('done', i<current);
+    });
+    backBtn.disabled = current === 0;
+    nextBtn.textContent = current === total-1 ? 'Submit' : 'Next';
+    if (current === total-1) buildReview();
+  }
+
+  function buildReview(){
+    const fields = [
+      ['Full name','full_name'], ['Date of birth','dob'], ["Father's name",'father_name'],
+      ['Phone','phone'], ['Email','email'], ['Address','address'], ['City','city'],
+      ['State','state'], ['Pincode','pincode']
+    ];
+    let html = '';
+    fields.forEach(([label,id])=>{
+      const val = document.getElementById(id).value || '(empty)';
+      html += `<div class="review-item"><span>${label}</span><span>${val}</span></div>`;
+    });
+    const photo = document.getElementById('photo').files[0];
+    const idproof = document.getElementById('idproof').files[0];
+    html += `<div class="review-item"><span>Photo</span><span>${photo ? photo.name : '(not uploaded)'}</span></div>`;
+    html += `<div class="review-item"><span>ID proof</span><span>${idproof ? idproof.name : '(not uploaded)'}</span></div>`;
+    html += `<div class="review-item"><span>Signature</span><span>${sigDrawn ? 'captured' : '(not drawn)'}</span></div>`;
+    document.getElementById('reviewBox').innerHTML = html;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const activePanel = panels[current];
+    const requiredInputs = activePanel.querySelectorAll('[required]');
+    for (const inp of requiredInputs){
+      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
+        inp.style.borderColor = 'red';
+        inp.focus();
+        return;
+      }
+      inp.style.borderColor = '#ccc';
+    }
+    if (current < total-1){
+      current++;
+      updateUI();
+    } else {
+      const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+      const resultBox = document.getElementById('result');
+      resultBox.style.display = 'block';
+      resultBox.textContent = 'SUBMITTED OK\nTime from page load to submit: ' + elapsed + 's';
+      document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+      nextBtn.disabled = true;
+    }
+  });
+
+  backBtn.addEventListener('click', ()=>{
+    if (current > 0){ current--; updateUI(); }
+  });
+
+  const canvas = document.getElementById('sigpad');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let sigDrawn = false;
+  function pos(e){
+    const rect = canvas.getBoundingClientRect();
+    const point = e.touches ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+  }
+  function start(e){ drawing = true; sigDrawn = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function move(e){ if(!drawing) return; const p = pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); }
+  function end(){ drawing = false; }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', move);
+  canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', ()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    sigDrawn = false;
+  });
+
+  updateUI();
+</script>
+</body>
+</html>
