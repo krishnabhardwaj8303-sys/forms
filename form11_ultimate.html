@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Test Form 11 — Ultimate / Composite</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; background: #f5f5f5; color: #222; }
+  h1 { font-size: 20px; }
+  h3 { font-size: 15px; border-bottom: 2px solid #2563eb; padding-bottom: 6px; margin-top: 28px; }
+  .badge { display:inline-block; background:#7c2d12; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:16px;}
+  .card { background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  label { display: block; margin-top: 14px; font-weight: bold; font-size: 13px; }
+  .hint { font-weight: normal; color: #777; font-size: 11px; }
+  input, select, textarea { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; font-size: 14px; border: 1px solid #ccc; border-radius: 4px; }
+  .row { display:flex; gap:12px; }
+  .row > div { flex:1; }
+  .hidden { display:none; }
+  .accordion-head { cursor:pointer; background:#eef2ff; padding:10px 14px; border-radius:6px; font-weight:bold; font-size:14px; margin-top:20px; display:flex; justify-content:space-between; }
+  .accordion-body { display:none; padding:10px 4px; }
+  .accordion-body.open { display:block; }
+  table { width:100%; border-collapse: collapse; margin-top:10px; }
+  table th, table td { border:1px solid #ddd; padding:6px; font-size:13px; }
+  table th { background:#f0f0f0; }
+  .small-btn { padding:6px 12px; font-size:12px; background:#e5e7eb; color:#222; border:none; border-radius:4px; cursor:pointer; }
+  .add-row-btn { margin-top:8px; }
+  button.submit-btn { padding: 12px 28px; background: #2563eb; color: #fff; border: none; border-radius: 4px; font-size: 15px; cursor: pointer; margin-top: 24px; }
+  canvas#sigpad { border:1px dashed #999; border-radius:4px; touch-action:none; background:#fff; }
+  #captchaBox { display:flex; align-items:center; gap:10px; margin-top:6px; }
+  #captchaText { font-family: monospace; font-size:20px; letter-spacing:4px; background:#222; color:#0f0; padding:6px 16px; border-radius:4px; user-select:none; text-decoration: line-through wavy; }
+  #ageAuto, #totalIncomeAuto { background:#f0fdf4; font-weight:bold; }
+  #result { display:none; margin-top:20px; padding:16px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:13px; white-space:pre-wrap; }
+  .err { color:#b91c1c; font-size:12px; margin-top:4px; display:none; }
+  #timer { font-size:12px; color:#666; margin-top:10px; }
+</style>
+</head>
+<body>
+  <span class="badge">TEST FORM 11 · ULTIMATE / COMPOSITE STRESS TEST</span>
+  <h1>Composite Welfare-cum-Recruitment Application</h1>
+  <div class="card">
+    <form id="mainForm">
+
+      <h3>Section A — अभ्यर्थी विवरण / Applicant Particulars</h3>
+
+      <label for="applicantName">Applicant's Full Name (as per Matriculation Certificate) <span class="hint">block letters</span></label>
+      <input type="text" id="applicantName" required>
+
+      <div class="row">
+        <div>
+          <label for="dobDDMMYYYY">जन्म तिथि (DD/MM/YYYY) <span class="hint">not a date picker — type manually</span></label>
+          <input type="text" id="dobDDMMYYYY" placeholder="e.g. 15/08/2001" pattern="\d{2}/\d{2}/\d{4}" required>
+        </div>
+        <div>
+          <label for="ageAuto">Age (auto-calculated) <span class="hint">read-only</span></label>
+          <input type="text" id="ageAuto" readonly>
+        </div>
+      </div>
+
+      <label for="gender">Gender</label>
+      <select id="gender" required>
+        <option value="">-- Select --</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Transgender</option>
+      </select>
+
+      <label>Category <span class="hint">radio, not dropdown</span></label>
+      <div class="row">
+        <div><label style="font-weight:normal"><input type="radio" name="category" value="General" style="width:auto;display:inline"> General</label></div>
+        <div><label style="font-weight:normal"><input type="radio" name="category" value="OBC" style="width:auto;display:inline"> OBC</label></div>
+        <div><label style="font-weight:normal"><input type="radio" name="category" value="SC" style="width:auto;display:inline"> SC</label></div>
+        <div><label style="font-weight:normal"><input type="radio" name="category" value="ST" style="width:auto;display:inline"> ST</label></div>
+      </div>
+
+      <label for="pwdToggle" style="font-weight:normal"><input type="checkbox" id="pwdToggle" style="width:auto;display:inline"> Person with Disability (PwD)?</label>
+      <div id="pwdBlock" class="hidden">
+        <label for="pwdPercent">Disability percentage</label>
+        <input type="number" id="pwdPercent" min="0" max="100">
+        <label for="pwdType">Nature of disability</label>
+        <input type="text" id="pwdType">
+      </div>
+
+      <label for="aadhaar">आधार संख्या / Aadhaar Number <span class="hint">12 digits, spaces allowed like 1234 5678 9012</span></label>
+      <input type="text" id="aadhaar" placeholder="XXXX XXXX XXXX" required>
+      <div class="err" id="aadhaarErr">Aadhaar must be 12 digits</div>
+
+      <h3>Section B — Contact & Domicile</h3>
+
+      <label for="mobile">Mobile (10 digit, no +91 prefix)</label>
+      <input type="tel" id="mobile" required>
+
+      <label for="email">Email ID</label>
+      <input type="email" id="email">
+
+      <label for="domState">State of Domicile</label>
+      <select id="domState" required>
+        <option value="">-- Select State --</option>
+        <option value="CG">Chhattisgarh</option>
+        <option value="MP">Madhya Pradesh</option>
+        <option value="MH">Maharashtra</option>
+        <option value="UP">Uttar Pradesh</option>
+      </select>
+
+      <label for="domDistrict">District <span class="hint">options depend on the State selected above</span></label>
+      <select id="domDistrict" required>
+        <option value="">-- Select State first --</option>
+      </select>
+
+      <label for="pincode">Pin Code</label>
+      <input type="text" id="pincode" pattern="\d{6}" required>
+
+      <div class="accordion-head" id="accHead1">▸ Permanent Address (click to expand — differs from correspondence address)</div>
+      <div class="accordion-body" id="accBody1">
+        <label for="permAddr">Permanent Address</label>
+        <textarea id="permAddr" rows="2"></textarea>
+        <label for="sameAsAbove" style="font-weight:normal"><input type="checkbox" id="sameAsAbove" style="width:auto;display:inline"> Same as correspondence address</label>
+      </div>
+
+      <h3>Section C — Educational Qualification</h3>
+
+      <label for="qualification">Highest Qualification</label>
+      <select id="qualification" required>
+        <option value="">-- Select --</option>
+        <option>10th Pass</option>
+        <option>12th Pass</option>
+        <option>Graduate</option>
+        <option>Post Graduate</option>
+      </select>
+
+      <label for="board">Board / University</label>
+      <input type="text" id="board" required>
+
+      <label for="marksType">Result expressed in</label>
+      <select id="marksType">
+        <option value="pct">Percentage</option>
+        <option value="cgpa">CGPA</option>
+      </select>
+      <input type="text" id="marksValue" placeholder="e.g. 78.4 or 8.2">
+
+      <h3>Section D — Family Income (used to auto-calculate eligibility)</h3>
+
+      <table id="incomeTable">
+        <thead><tr><th>Source</th><th>Annual Amount (₹)</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="incSrc" value="Father's income"></td>
+            <td><input type="number" class="incAmt" value="0"></td>
+            <td><button type="button" class="small-btn removeRow">✕</button></td>
+          </tr>
+          <tr>
+            <td><input type="text" class="incSrc" value="Mother's income"></td>
+            <td><input type="number" class="incAmt" value="0"></td>
+            <td><button type="button" class="small-btn removeRow">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="small-btn add-row-btn" id="addIncomeRow">+ Add income source</button>
+
+      <label for="totalIncomeAuto">Total Family Income (auto-calculated)</label>
+      <input type="text" id="totalIncomeAuto" readonly>
+
+      <h3>Section E — Family Members <span class="hint">(add a row per member)</span></h3>
+      <table id="familyTable">
+        <thead><tr><th>Name</th><th>Relation</th><th>Age</th><th>Occupation</th><th></th></tr></thead>
+        <tbody>
+          <tr>
+            <td><input type="text" class="famName"></td>
+            <td><input type="text" class="famRel"></td>
+            <td><input type="number" class="famAge"></td>
+            <td><input type="text" class="famOcc"></td>
+            <td><button type="button" class="small-btn removeFamRow">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="button" class="small-btn add-row-btn" id="addFamRow">+ Add family member</button>
+
+      <h3>Section F — Declaration & Verification</h3>
+
+      <label for="bankIFSC">Bank IFSC Code <span class="hint">11 characters, e.g. SBIN0001234</span></label>
+      <input type="text" id="bankIFSC" style="text-transform:uppercase">
+
+      <label for="preferredExamCity">Preferred Exam Centre <span class="hint">multi-select, choose up to 3</span></label>
+      <select id="preferredExamCity" multiple size="4">
+        <option>Raipur</option>
+        <option>Bilaspur</option>
+        <option>Durg</option>
+        <option>Jagdalpur</option>
+        <option>Ambikapur</option>
+      </select>
+
+      <label>Draw signature</label>
+      <canvas id="sigpad" width="500" height="120"></canvas><br>
+      <button type="button" class="small-btn" id="clearSig" style="margin-top:8px;">Clear</button>
+
+      <label for="captchaInput">Enter the code shown below <span class="hint">(anti-bot check)</span></label>
+      <div id="captchaBox">
+        <span id="captchaText"></span>
+        <button type="button" class="small-btn" id="refreshCaptcha">↻</button>
+      </div>
+      <input type="text" id="captchaInput" required>
+
+      <label style="font-weight:normal; margin-top:18px;"><input type="checkbox" id="declare" required style="width:auto;display:inline"> मैं घोषणा करता/करती हूँ कि उपरोक्त सभी जानकारी सही है। I declare that the information given above is true to the best of my knowledge.</label>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Submit Application</button>
+      <div id="timer">Timer running...</div>
+      <div id="result"></div>
+    </form>
+  </div>
+
+<script>
+  const startTime = performance.now();
+
+  // --- Age auto-calc from DD/MM/YYYY text field ---
+  const dobField = document.getElementById('dobDDMMYYYY');
+  const ageField = document.getElementById('ageAuto');
+  dobField.addEventListener('input', () => {
+    const m = dobField.value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m) { ageField.value = ''; return; }
+    const [_, d, mo, y] = m;
+    const dob = new Date(`${y}-${mo}-${d}`);
+    if (isNaN(dob.getTime())) { ageField.value = ''; return; }
+    const diff = Date.now() - dob.getTime();
+    ageField.value = Math.floor(diff / (365.25*24*3600*1000)) + ' years';
+  });
+
+  // --- PwD conditional block ---
+  document.getElementById('pwdToggle').addEventListener('change', function(){
+    document.getElementById('pwdBlock').classList.toggle('hidden', !this.checked);
+  });
+
+  // --- Aadhaar validation on the fly ---
+  const aadhaarField = document.getElementById('aadhaar');
+  aadhaarField.addEventListener('blur', () => {
+    const digits = aadhaarField.value.replace(/\s/g,'');
+    document.getElementById('aadhaarErr').style.display = (digits.length === 12 && /^\d+$/.test(digits)) ? 'none' : 'block';
+  });
+
+  // --- Dependent dropdown: state -> district ---
+  const districts = {
+    CG: ['Raipur','Bilaspur','Durg','Bastar','Korba','Rajnandgaon'],
+    MP: ['Bhopal','Indore','Gwalior','Jabalpur'],
+    MH: ['Mumbai','Pune','Nagpur','Nashik'],
+    UP: ['Lucknow','Kanpur','Varanasi','Agra']
+  };
+  const stateSel = document.getElementById('domState');
+  const distSel = document.getElementById('domDistrict');
+  stateSel.addEventListener('change', () => {
+    const list = districts[stateSel.value] || [];
+    distSel.innerHTML = '<option value="">-- Select District --</option>' + list.map(d=>`<option>${d}</option>`).join('');
+  });
+
+  // --- Accordion toggle ---
+  document.getElementById('accHead1').addEventListener('click', () => {
+    document.getElementById('accBody1').classList.toggle('open');
+  });
+
+  // --- Income table: add/remove rows + auto total ---
+  function recalcIncome(){
+    let total = 0;
+    document.querySelectorAll('#incomeTable .incAmt').forEach(inp => total += (parseFloat(inp.value)||0));
+    document.getElementById('totalIncomeAuto').value = '₹ ' + total.toLocaleString('en-IN');
+  }
+  document.getElementById('incomeTable').addEventListener('input', recalcIncome);
+  document.getElementById('incomeTable').addEventListener('click', (e) => {
+    if (e.target.classList.contains('removeRow')) { e.target.closest('tr').remove(); recalcIncome(); }
+  });
+  document.getElementById('addIncomeRow').addEventListener('click', () => {
+    const tbody = document.querySelector('#incomeTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" class="incSrc"></td><td><input type="number" class="incAmt" value="0"></td><td><button type="button" class="small-btn removeRow">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  recalcIncome();
+
+  // --- Family table: add/remove rows ---
+  document.getElementById('addFamRow').addEventListener('click', () => {
+    const tbody = document.querySelector('#familyTable tbody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td><input type="text" class="famName"></td><td><input type="text" class="famRel"></td><td><input type="number" class="famAge"></td><td><input type="text" class="famOcc"></td><td><button type="button" class="small-btn removeFamRow">✕</button></td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('familyTable').addEventListener('click', (e) => {
+    if (e.target.classList.contains('removeFamRow')) e.target.closest('tr').remove();
+  });
+
+  // --- Signature pad ---
+  const canvas = document.getElementById('sigpad');
+  const ctx = canvas.getContext('2d');
+  let drawing = false, sigDrawn = false;
+  function pos(e){ const r = canvas.getBoundingClientRect(); const p = e.touches ? e.touches[0] : e; return {x:p.clientX-r.left, y:p.clientY-r.top}; }
+  function start(e){ drawing=true; sigDrawn=true; const p=pos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); }
+  function move(e){ if(!drawing) return; const p=pos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); e.preventDefault(); }
+  function end(){ drawing=false; }
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  canvas.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', move);
+  canvas.addEventListener('touchend', end);
+  document.getElementById('clearSig').addEventListener('click', () => { ctx.clearRect(0,0,canvas.width,canvas.height); sigDrawn=false; });
+
+  // --- Captcha ---
+  function genCaptcha(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    let s = '';
+    for (let i=0;i<5;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    document.getElementById('captchaText').textContent = s;
+    document.getElementById('captchaText').dataset.value = s;
+  }
+  genCaptcha();
+  document.getElementById('refreshCaptcha').addEventListener('click', genCaptcha);
+
+  // --- Submit ---
+  document.getElementById('mainForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const captchaOk = document.getElementById('captchaInput').value.trim().toUpperCase() === document.getElementById('captchaText').dataset.value;
+    if (!captchaOk){
+      alert('Captcha does not match. Please re-check the code shown.');
+      genCaptcha();
+      return;
+    }
+    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
+    const resultBox = document.getElementById('result');
+    resultBox.style.display = 'block';
+    resultBox.textContent = 'SUBMITTED OK\nTime from page load to submit: ' + elapsed + 's\nSignature drawn: ' + sigDrawn;
+    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
+    document.getElementById('submitBtn').disabled = true;
+  });
+</script>
+</body>
+</html>
