@@ -2,318 +2,768 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Test Form 5 — NEET/NTA style</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vyapam Profile — Test Replica</title>
 <style>
-  body { font-family: Arial, sans-serif; max-width: 720px; margin: 30px auto; padding: 0 20px; background: #eef1f5; color: #1a1a1a; }
-  h1 { font-size: 19px; margin-bottom:2px; }
-  .subtitle { font-size:12px; color:#555; margin-bottom:14px; }
-  .badge { display:inline-block; background:#0b4f8a; color:#fff; font-size:12px; padding:3px 8px; border-radius:4px; margin-bottom:10px;}
-  .steps { display:flex; gap:4px; margin-bottom:16px; flex-wrap:wrap; }
-  .step-dot { flex:1; min-width:30px; height:6px; background:#d3d9e0; border-radius:3px; }
-  .step-dot.active { background:#0b4f8a; }
-  .step-dot.done { background:#1e8e3e; }
-  .step-label { font-size:11px; color:#666; margin-bottom:14px; }
-  .card { background: #fff; padding: 22px 24px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
-  h3 { font-size:15px; border-bottom:2px solid #0b4f8a; padding-bottom:6px; margin-top:0; color:#0b4f8a; }
-  label { display: block; margin-top: 12px; font-weight: bold; font-size: 13px; }
-  .hint { font-weight:normal; font-size:11px; color:#888; }
-  input, select, textarea { width: 100%; padding: 7px; margin-top: 4px; box-sizing: border-box; font-size: 13px; border: 1px solid #ccc; border-radius: 4px; }
-  .row { display:flex; gap:10px; }
-  .row > div { flex:1; }
-  .row3 > div { flex:1; }
-  .panel { display:none; }
-  .panel.active { display:block; }
-  .radio-group label, .checkbox-group label { display:inline-block; font-weight:normal; margin-right:14px; font-size:13px; }
-  .nav { display:flex; justify-content:space-between; margin-top:22px; }
-  button { padding: 9px 22px; background: #0b4f8a; color: #fff; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; }
-  button.secondary { background:#e5e7eb; color:#222; }
-  button:disabled { opacity:0.5; cursor:not-allowed; }
-  .review-item { display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee; font-size:13px; }
-  .review-section-title { font-weight:bold; color:#0b4f8a; margin-top:14px; font-size:13px; }
-  .req-box { background:#fff8e1; border:1px solid #f0d878; border-radius:4px; padding:8px 10px; font-size:11px; color:#7a5c00; margin-top:6px; }
-  .captcha-text { font-size:24px; font-weight:bold; letter-spacing:5px; background:#eee; padding:6px 18px; border-radius:4px; font-family: 'Courier New', monospace; transform: skewX(-6deg); display:inline-block; }
-  .otp-row { display:flex; gap:6px; margin-top:6px; }
-  .otp-row input { text-align:center; font-size:16px; padding:8px 0; }
-  .fee-box { background:#f0f7ff; border:1px solid #b6d4f5; border-radius:6px; padding:12px 16px; margin-top:10px; font-size:13px; }
-  #timer { font-size:12px; color:#666; margin-top:10px; }
-  #result { display:none; margin-top:18px; padding:14px; background:#eefbea; border:1px solid #9fdb9f; border-radius:6px; font-size:12px; white-space:pre-wrap; }
+  :root{
+    --navy:#152a6b;
+    --navy-dark:#0d1c4a;
+    --orange:#f5821f;
+    --green:#3aa856;
+    --grey-bg:#eef1f6;
+    --card:#ffffff;
+    --text:#1c2330;
+    --text-mid:#5b6472;
+    --border:#d7dce5;
+    --error:#c0392b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:var(--grey-bg);
+    color:var(--text);
+  }
+
+  /* ── QA disclaimer banner ── */
+  .qa-banner{
+    background:var(--navy-dark);
+    color:#fff;
+    text-align:center;
+    font-size:12px;
+    padding:6px 10px;
+    letter-spacing:.3px;
+  }
+  .qa-banner b{color:var(--orange);}
+
+  /* ── Top header bar (mimics real site) ── */
+  .topbar{
+    background:var(--navy);
+    color:#fff;
+    padding:14px 20px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .topbar .emblem{
+    width:40px;height:40px;border-radius:50%;
+    background:linear-gradient(135deg,var(--orange),var(--green));
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;
+  }
+  .topbar h1{font-size:16px;margin:0;font-weight:600;}
+  .topbar span{font-size:11px;color:#c7d0e8;display:block;}
+  .step-indicator{
+    margin-left:auto;font-size:11px;background:rgba(255,255,255,.12);
+    padding:4px 10px;border-radius:20px;
+  }
+
+  .stripe{height:5px;background:linear-gradient(90deg,var(--orange),var(--green));}
+
+  .wrap{max-width:640px;margin:0 auto;padding:20px 16px 80px;}
+
+  .card{
+    background:var(--card);
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(20,30,60,.06);
+    border:1px solid var(--border);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .card-header{
+    background:var(--navy);
+    color:#fff;
+    padding:12px 18px;
+    font-size:15px;
+    font-weight:600;
+  }
+  .card-body{padding:20px 18px;}
+
+  label{
+    display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text);
+  }
+  label .hi{font-weight:400;color:var(--text-mid);font-size:12px;}
+  .req{color:var(--error);}
+
+  input[type=text], input[type=email], input[type=tel], input[type=password],
+  input[type=date], select, textarea{
+    width:100%;
+    padding:11px 12px;
+    border:1px solid var(--border);
+    border-radius:7px;
+    font-size:14px;
+    margin-bottom:16px;
+    background:#fff;
+    color:var(--text);
+    font-family:inherit;
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:none;border-color:var(--navy);box-shadow:0 0 0 3px rgba(21,42,107,.1);
+  }
+  input[readonly]{background:#f4f6fa;color:var(--text-mid);}
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media (max-width:560px){.row2{grid-template-columns:1fr;gap:0;}}
+
+  .captcha-box{
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  }
+  .captcha-img{
+    font-family:'Courier New',monospace;font-weight:700;font-size:20px;
+    letter-spacing:3px;color:#7a3fc9;background:#f4effb;
+    border:2px dashed #c9aef2;padding:8px 18px;border-radius:6px;
+    user-select:none;
+  }
+  .captcha-refresh{
+    width:34px;height:34px;border-radius:50%;background:var(--green);
+    color:#fff;border:none;font-size:16px;cursor:pointer;
+  }
+
+  .checkbox-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:16px;font-size:13px;}
+  .checkbox-row input{width:auto;margin:2px 0 0;}
+
+  .btn{
+    display:inline-block;border:none;border-radius:7px;padding:12px 22px;
+    font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .btn-primary{background:var(--navy);color:#fff;}
+  .btn-primary:hover{background:var(--navy-dark);}
+  .btn-outline{background:#fff;color:var(--navy);border:1px solid var(--navy);}
+  .btn-green{background:var(--green);color:#fff;}
+  .btn-row{display:flex;justify-content:space-between;margin-top:6px;}
+  .btn-full{width:100%;}
+
+  .file-row{
+    border:1px dashed var(--border);border-radius:7px;padding:14px;
+    margin-bottom:16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  }
+  .file-row input[type=file]{margin:0;flex:1;min-width:180px;}
+  .file-hint{font-size:11px;color:var(--text-mid);width:100%;}
+
+  .exam-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .exam-table th{
+    background:var(--grey-bg);text-align:left;padding:10px;font-size:12px;color:var(--text-mid);
+  }
+  .exam-table td{padding:12px 10px;border-top:1px solid var(--border);vertical-align:top;}
+  .apply-btn{
+    background:var(--green);color:#fff;border:none;padding:8px 16px;
+    border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;
+  }
+  .last-date{font-size:11px;color:var(--error);font-weight:600;margin-top:4px;}
+
+  .hidden{display:none !important;}
+
+  .success-box{
+    text-align:center;padding:40px 20px;
+  }
+  .success-box .tick{
+    width:64px;height:64px;border-radius:50%;background:var(--green);
+    color:#fff;font-size:32px;display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;
+  }
+  .success-box .ref{
+    font-family:'Courier New',monospace;font-size:20px;font-weight:700;
+    background:var(--grey-bg);padding:10px 16px;border-radius:6px;display:inline-block;margin:10px 0;
+  }
+
+  .nav-links{text-align:center;font-size:12px;color:var(--text-mid);margin-top:10px;}
+  .nav-links a{color:var(--navy);text-decoration:none;font-weight:600;cursor:pointer;}
+
+  .decl-text{
+    font-size:12px;color:var(--text-mid);background:var(--grey-bg);
+    border-radius:7px;padding:12px;margin-bottom:14px;line-height:1.6;
+  }
+
+  .fee-box{
+    background:var(--grey-bg);border-radius:7px;padding:14px;margin-bottom:16px;
+  }
+  .fee-box .amount{font-size:22px;font-weight:700;color:var(--navy);}
 </style>
 </head>
 <body>
-  <span class="badge">TEST FORM 5 · NEET/NTA-STYLE (8 STEPS)</span>
-  <h1>National Eligibility cum Entrance Test — Application Form</h1>
-  <div class="subtitle">This is a synthetic test form for QA purposes only. Not affiliated with NTA.</div>
-  <div class="steps" id="stepsBar"></div>
-  <div class="step-label" id="stepLabel"></div>
-  <div class="card">
 
-    <div class="panel active" id="panel-0">
-      <h3>1. Personal details</h3>
-      <label for="full_name">Candidate full name (as per Class 10 certificate)</label>
-      <input type="text" id="full_name" required>
-      <div class="row">
-        <div><label for="dob">Date of birth</label><input type="date" id="dob" required></div>
-        <div><label for="gender">Gender</label>
-          <select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Transgender</option></select>
-        </div>
-      </div>
-      <div class="row">
-        <div><label for="nationality">Nationality</label>
-          <select id="nationality" required><option value="">Select</option><option>Indian</option><option>NRI</option><option>OCI</option><option>Foreign National</option></select>
-        </div>
-        <div><label for="category">Category</label>
-          <select id="category" required><option value="">Select</option><option>General</option><option>EWS</option><option>OBC-NCL</option><option>SC</option><option>ST</option></select>
-        </div>
-      </div>
-      <div class="row">
-        <div><label for="pwd">PwD (Person with Disability)</label>
-          <select id="pwd" required><option value="">Select</option><option>Yes</option><option>No</option></select>
-        </div>
-        <div><label for="aadhaar">Aadhaar / ID number</label><input type="text" id="aadhaar" maxlength="12" required></div>
-      </div>
-      <div class="row">
-        <div><label for="phone">Mobile number</label><input type="tel" id="phone" maxlength="10" required></div>
-        <div><label for="email">Email address</label><input type="email" id="email" required></div>
-      </div>
-    </div>
+<div class="qa-banner">
+  🧪 <b>SYNTHETIC TEST REPLICA</b> — QA / autofill-engine testing purposes only. Not affiliated with, and not the real, CG Vyapam / CGSSB.
+</div>
 
-    <div class="panel" id="panel-1">
-      <h3>2. Parent / guardian details</h3>
-      <div class="row">
-        <div><label for="father_name">Father's name</label><input type="text" id="father_name" required></div>
-        <div><label for="mother_name">Mother's name</label><input type="text" id="mother_name" required></div>
-      </div>
-      <div class="row">
-        <div><label for="father_occupation">Father's occupation</label><input type="text" id="father_occupation"></div>
-        <div><label for="annual_income">Annual family income</label>
-          <select id="annual_income" required><option value="">Select</option><option>Below 1 lakh</option><option>1-5 lakh</option><option>5-8 lakh</option><option>Above 8 lakh</option></select>
-        </div>
-      </div>
-      <label for="guardian_phone">Parent/guardian mobile number</label>
-      <input type="tel" id="guardian_phone" maxlength="10" required>
-    </div>
-
-    <div class="panel" id="panel-2">
-      <h3>3. Address</h3>
-      <label for="perm_address">Permanent address</label>
-      <textarea id="perm_address" rows="2" required></textarea>
-      <div class="row row3">
-        <div><label for="perm_state">State</label><input type="text" id="perm_state" required></div>
-        <div><label for="perm_city">City/district</label><input type="text" id="perm_city" required></div>
-        <div><label for="perm_pin">Pincode</label><input type="text" id="perm_pin" maxlength="6" required></div>
-      </div>
-      <div class="checkbox-group" style="margin-top:14px;">
-        <label><input type="checkbox" id="sameAddress" style="width:auto;"> Correspondence address same as permanent address</label>
-      </div>
-      <div id="correspondenceBlock">
-        <label for="corr_address">Correspondence address</label>
-        <textarea id="corr_address" rows="2"></textarea>
-        <div class="row row3">
-          <div><label for="corr_state">State</label><input type="text" id="corr_state"></div>
-          <div><label for="corr_city">City/district</label><input type="text" id="corr_city"></div>
-          <div><label for="corr_pin">Pincode</label><input type="text" id="corr_pin" maxlength="6"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" id="panel-3">
-      <h3>4. Academic details</h3>
-      <label style="margin-top:0;">Class 10</label>
-      <div class="row row3">
-        <div><input type="text" id="c10_board" placeholder="Board name" required></div>
-        <div><input type="text" id="c10_year" placeholder="Passing year" required></div>
-        <div><input type="text" id="c10_roll" placeholder="Roll number" required></div>
-      </div>
-      <label>Class 12 / qualifying examination</label>
-      <div class="row">
-        <div><label for="c12_status" class="hint">Status</label>
-          <select id="c12_status" required><option value="">Select</option><option>Passed</option><option>Appearing</option></select>
-        </div>
-        <div><label for="c12_board" class="hint">Board name</label><input type="text" id="c12_board" required></div>
-      </div>
-      <div class="row row3">
-        <div><input type="text" id="c12_year" placeholder="Passing/appearing year" required></div>
-        <div><input type="text" id="c12_roll" placeholder="Roll number"></div>
-        <div><input type="text" id="c12_percent" placeholder="PCB % (if passed)"></div>
-      </div>
-      <label>Subjects in Class 12</label>
-      <div class="checkbox-group">
-        <label><input type="checkbox" style="width:auto;" id="sub_physics" checked disabled> Physics</label>
-        <label><input type="checkbox" style="width:auto;" id="sub_chem" checked disabled> Chemistry</label>
-        <label><input type="checkbox" style="width:auto;" id="sub_bio" checked disabled> Biology/Biotechnology</label>
-        <label><input type="checkbox" style="width:auto;" id="sub_english"> English</label>
-      </div>
-    </div>
-
-    <div class="panel" id="panel-4">
-      <h3>5. Exam center preference</h3>
-      <label for="medium">Medium of question paper</label>
-      <select id="medium" required><option value="">Select</option><option>English</option><option>Hindi</option><option>Regional language</option></select>
-      <label for="pref1">City preference 1</label>
-      <select id="pref1" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
-      <label for="pref2">City preference 2</label>
-      <select id="pref2" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
-      <label for="pref3">City preference 3</label>
-      <select id="pref3" required><option value="">Select</option><option>Delhi</option><option>Raipur</option><option>Mumbai</option><option>Bengaluru</option><option>Lucknow</option><option>Patna</option></select>
-    </div>
-
-    <div class="panel" id="panel-5">
-      <h3>6. Photo, signature and thumb impression</h3>
-      <label for="photo">Passport-size photograph</label>
-      <div class="req-box">Format: JPEG only. Size: 10 KB - 200 KB. Dimensions: 3.5 cm x 4.5 cm (width x height). White background, taken within last 6 months.</div>
-      <input type="file" id="photo" accept="image/jpeg">
-      <label for="signature">Signature</label>
-      <div class="req-box">Format: JPEG only. Size: 4 KB - 30 KB. Dimensions: 3.5 cm x 1.5 cm. Signed on white paper with black ink.</div>
-      <input type="file" id="signature" accept="image/jpeg">
-      <label for="thumb">Left hand thumb impression</label>
-      <div class="req-box">Format: JPEG only. Size: 10 KB - 50 KB. Impression taken with blue/black ink on white paper.</div>
-      <input type="file" id="thumb" accept="image/jpeg">
-    </div>
-
-    <div class="panel" id="panel-6">
-      <h3>7. Declaration and security check</h3>
-      <div class="checkbox-group">
-        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare1" style="width:auto;" required> I declare that all information provided is true to the best of my knowledge.</label>
-        <label style="display:block; margin-top:8px;"><input type="checkbox" id="declare2" style="width:auto;" required> I agree to abide by the rules and regulations of the examining body.</label>
-      </div>
-      <label>Security check</label>
-      <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
-        <span class="captcha-text" id="captchaText"></span>
-        <button type="button" id="refreshCaptcha" class="secondary">&#8635;</button>
-      </div>
-      <input type="text" id="captchaInput" placeholder="Type the code shown above" required style="margin-top:8px;">
-    </div>
-
-    <div class="panel" id="panel-7">
-      <h3>8. Fee payment and final submit</h3>
-      <div class="fee-box" id="feeBox">Calculating fee based on category...</div>
-      <div class="review-section-title">Review summary</div>
-      <div id="reviewBox"></div>
-      <label style="margin-top:16px;">Enter 6-digit OTP sent to your mobile</label>
-      <div class="otp-row">
-        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
-        <input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box"><input maxlength="1" class="otp-box">
-      </div>
-      <div style="font-size:11px;color:#888;margin-top:4px;">Test mode: any 6 digits accepted.</div>
-    </div>
-
-    <div class="nav">
-      <button type="button" class="secondary" id="backBtn" disabled>Back</button>
-      <button type="button" id="nextBtn">Next</button>
-    </div>
-    <div id="timer">Timer running...</div>
-    <div id="result"></div>
+<div class="topbar">
+  <div class="emblem">CG</div>
+  <div>
+    <h1 id="topTitle">Vyapam Profile</h1>
+    <span id="topSub">Test Replica Portal</span>
   </div>
+  <div class="step-indicator" id="stepIndicator">Login</div>
+</div>
+<div class="stripe"></div>
+
+<div class="wrap">
+
+  <!-- ═══════════════════ LOGIN VIEW ═══════════════════ -->
+  <section id="view-login" class="view">
+    <div class="card">
+      <div class="card-header">Login</div>
+      <div class="card-body">
+        <label for="loginMobile">Registered Mobile Number</label>
+        <input type="tel" id="loginMobile" name="loginMobile" placeholder="Registered Mobile Number" maxlength="10">
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" name="loginPassword" placeholder="Password">
+
+        <label for="loginCaptcha">Enter Captcha Text</label>
+        <input type="text" id="loginCaptcha" name="loginCaptcha" placeholder="Enter Captcha Text" autocomplete="off">
+        <div class="captcha-box">
+          <div class="captcha-img" id="loginCaptchaImg">7QX2KP</div>
+          <button type="button" class="captcha-refresh" onclick="refreshCaptcha('loginCaptchaImg')">⟳</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="goTo('view-dashboard'); setStep('Exam List')">Login</button>
+          <button class="btn btn-outline" onclick="goTo('view-reg-1'); setStep('Registration 1 / 9')">Create New Profile</button>
+        </div>
+        <p class="nav-links">Forgot password? <a onclick="alert('Test replica — no real password reset.')">Reset here</a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 1: Mobile + Email + Captcha ═══════════════════ -->
+  <section id="view-reg-1" class="view hidden">
+    <div class="card">
+      <div class="card-header">CG Vyapam Profile Registration Form</div>
+      <div class="card-body">
+        <h3 style="margin-top:0;font-size:14px;color:var(--navy);">Mobile Number &amp; e-mail Verification</h3>
+
+        <label for="regMobile">Mobile No <span class="req">*</span> <span class="hi">(मोबाइल नंबर)</span></label>
+        <input type="tel" id="regMobile" name="regMobile" placeholder="Mobile No" maxlength="10">
+
+        <label for="regCandidateName">Candidate's Name <span class="req">*</span></label>
+        <input type="text" id="regCandidateName" name="regCandidateName" placeholder="Candidate's Name">
+
+        <label for="regEmail">Enter email-ID <span class="req">*</span></label>
+        <input type="email" id="regEmail" name="regEmail" placeholder="Enter email-ID">
+
+        <label for="regCaptcha1">Enter Security Code (Captcha) <span class="req">*</span></label>
+        <input type="text" id="regCaptcha1" name="regCaptcha1" placeholder="Enter Security Code" autocomplete="off">
+        <div class="captcha-box">
+          <div class="captcha-img" id="regCaptcha1Img">M3JQZR</div>
+          <button type="button" class="captcha-refresh" onclick="refreshCaptcha('regCaptcha1Img')">⟳</button>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-2'); setStep('Registration 2 / 9')">Send OTP &amp; Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 2: OTP ═══════════════════ -->
+  <section id="view-reg-2" class="view hidden">
+    <div class="card">
+      <div class="card-header">Mobile &amp; Email OTP Verification</div>
+      <div class="card-body">
+        <p style="font-size:13px;color:var(--text-mid);">Test replica: any 6-digit value works.</p>
+        <label for="otpField">Enter OTP <span class="req">*</span></label>
+        <input type="text" id="otpField" name="otpField" placeholder="Enter OTP" maxlength="6" autocomplete="one-time-code">
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-3'); setStep('Registration 3 / 9')">Verify &amp; Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 3: Create Password ═══════════════════ -->
+  <section id="view-reg-3" class="view hidden">
+    <div class="card">
+      <div class="card-header">Create Password / पासवर्ड बनाये</div>
+      <div class="card-body">
+        <p style="font-size:12px;color:var(--error);line-height:1.6;">
+          Minimum 8-12 characters. Must include uppercase, lowercase, number and special character.
+          Example: Guest@123
+        </p>
+        <label for="regPassword">Password (पासवर्ड) <span class="req">*</span></label>
+        <input type="password" id="regPassword" name="regPassword" placeholder="Password">
+
+        <label for="regPasswordConfirm">Confirm Password (पासवर्ड की पुष्टि) <span class="req">*</span></label>
+        <input type="password" id="regPasswordConfirm" name="regPasswordConfirm" placeholder="Confirm Password">
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-4'); setStep('Registration 4 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 4: Basic Information ═══════════════════ -->
+  <section id="view-reg-4" class="view hidden">
+    <div class="card">
+      <div class="card-header">Basic Information / मूलभूत जानकारी</div>
+      <div class="card-body">
+        <label for="bFullName">Candidate's Name (उम्मीदवार का नाम) <span class="req">*</span></label>
+        <input type="text" id="bFullName" name="bFullName" placeholder="Candidate's Name">
+
+        <label for="bFatherName">Father's Name (पिता का नाम) <span class="req">*</span></label>
+        <input type="text" id="bFatherName" name="bFatherName" placeholder="Father's Name">
+
+        <label for="bMotherName">Mother's Name (माता का नाम) <span class="req">*</span></label>
+        <input type="text" id="bMotherName" name="bMotherName" placeholder="Mother's Name">
+
+        <div class="row2">
+          <div>
+            <label for="bGender">Gender (लिंग) <span class="req">*</span></label>
+            <select id="bGender" name="bGender">
+              <option value="">--Select--</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="bDob">Date of Birth (जन्म का दिनांक) <span class="req">*</span></label>
+            <input type="date" id="bDob" name="bDob">
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-5'); setStep('Registration 5 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 5: Extra info ═══════════════════ -->
+  <section id="view-reg-5" class="view hidden">
+    <div class="card">
+      <div class="card-header">Additional Details</div>
+      <div class="card-body">
+        <label for="bEmail">Email ID (ईमेल) <span class="req">*</span></label>
+        <input type="email" id="bEmail" name="bEmail" placeholder="Email ID">
+
+        <label for="bPwd">Person With Disabilities (क्या आप दिव्यांग है?) <span class="req">*</span></label>
+        <select id="bPwd" name="bPwd">
+          <option value="">--Select--</option>
+          <option value="Yes">Yes (हाँ)</option>
+          <option value="No">No (नहीं)</option>
+        </select>
+
+        <label for="bPwdType">Type of Disability (दिव्यांगता का प्रकार)</label>
+        <select id="bPwdType" name="bPwdType">
+          <option value="">--Select--</option>
+          <option value="Locomotor">Locomotor</option>
+          <option value="Visual">Visual</option>
+          <option value="Hearing">Hearing</option>
+        </select>
+
+        <label for="bClass">Class (श्रेणी) <span class="req">*</span></label>
+        <select id="bClass" name="bClass">
+          <option value="">--Select--</option>
+          <option value="General">General</option>
+          <option value="OBC">OBC</option>
+          <option value="SC">SC</option>
+          <option value="ST">ST</option>
+          <option value="EWS">EWS</option>
+        </select>
+
+        <label for="bNationality">Nationality (नागरिकता) <span class="req">*</span></label>
+        <select id="bNationality" name="bNationality">
+          <option value="">--Select--</option>
+          <option value="Indian">Indian</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-6'); setStep('Registration 6 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 6: Photo + Sign ═══════════════════ -->
+  <section id="view-reg-6" class="view hidden">
+    <div class="card">
+      <div class="card-header">Photo &amp; Signature Upload</div>
+      <div class="card-body">
+        <label>Photo <span class="req">*</span></label>
+        <div class="file-row">
+          <input type="file" id="uploadPhoto" name="uploadPhoto" accept="image/jpeg">
+          <span class="file-hint">JPEG only, 10–50 KB, 3.5cm x 4.5cm</span>
+        </div>
+
+        <label>Sign <span class="req">*</span></label>
+        <div class="file-row">
+          <input type="file" id="uploadSign" name="uploadSign" accept="image/jpeg">
+          <span class="file-hint">JPEG only, 5–20 KB, 6cm x 2cm</span>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-7'); setStep('Registration 7 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 7: Present Address ═══════════════════ -->
+  <section id="view-reg-7" class="view hidden">
+    <div class="card">
+      <div class="card-header">Present Address / वर्तमान पता</div>
+      <div class="card-body">
+        <label for="pHouseNo">House No (मकान नंबर)</label>
+        <input type="text" id="pHouseNo" name="pHouseNo" placeholder="House No">
+
+        <label for="pStreet">Street (स्ट्रीट)</label>
+        <input type="text" id="pStreet" name="pStreet" placeholder="Street">
+
+        <label for="pCity">City/Village (शहर / गांव) <span class="req">*</span></label>
+        <input type="text" id="pCity" name="pCity" placeholder="City/Village">
+
+        <label for="pPostOffice">Post Office (पोस्ट ऑफिस)</label>
+        <input type="text" id="pPostOffice" name="pPostOffice" placeholder="Post Office">
+
+        <div class="row2">
+          <div>
+            <label for="pDistrict">District (जिला) <span class="req">*</span></label>
+            <input type="text" id="pDistrict" name="pDistrict" placeholder="District">
+          </div>
+          <div>
+            <label for="pState">State (राज्य) <span class="req">*</span></label>
+            <select id="pState" name="pState">
+              <option value="">--Select--</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Odisha">Odisha</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="pPincode">Pincode (पिन कोड) <span class="req">*</span></label>
+        <input type="text" id="pPincode" name="pPincode" placeholder="Pincode" maxlength="6">
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-8'); setStep('Registration 8 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 8: Permanent Address ═══════════════════ -->
+  <section id="view-reg-8" class="view hidden">
+    <div class="card">
+      <div class="card-header">Permanent Address / स्थाई पता</div>
+      <div class="card-body">
+        <div class="checkbox-row">
+          <input type="checkbox" id="sameAsPresent" name="sameAsPresent" onchange="copyPresentToPermanent()">
+          <label for="sameAsPresent" style="margin:0;font-weight:400;">Address Same as Present Address / स्थाई पता वर्तमान पते के समान</label>
+        </div>
+
+        <label for="permHouseNo">House No (मकान नंबर)</label>
+        <input type="text" id="permHouseNo" name="permHouseNo" placeholder="House No">
+
+        <label for="permStreet">Street (स्ट्रीट)</label>
+        <input type="text" id="permStreet" name="permStreet" placeholder="Street">
+
+        <label for="permCity">City/Village (शहर / गांव) <span class="req">*</span></label>
+        <input type="text" id="permCity" name="permCity" placeholder="City/Village">
+
+        <label for="permPostOffice">Post Office (पोस्ट ऑफिस)</label>
+        <input type="text" id="permPostOffice" name="permPostOffice" placeholder="Post Office">
+
+        <div class="row2">
+          <div>
+            <label for="permDistrict">District (जिला) <span class="req">*</span></label>
+            <input type="text" id="permDistrict" name="permDistrict" placeholder="District">
+          </div>
+          <div>
+            <label for="permState">State (राज्य) <span class="req">*</span></label>
+            <select id="permState" name="permState">
+              <option value="">--Select--</option>
+              <option value="Chhattisgarh">Chhattisgarh</option>
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Odisha">Odisha</option>
+            </select>
+          </div>
+        </div>
+
+        <label for="permPincode">Pincode (पिन कोड) <span class="req">*</span></label>
+        <input type="text" id="permPincode" name="permPincode" placeholder="Pincode" maxlength="6">
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-reg-9'); setStep('Registration 9 / 9')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION STEP 9: Declaration ═══════════════════ -->
+  <section id="view-reg-9" class="view hidden">
+    <div class="card">
+      <div class="card-header">Declaration / घोषणा</div>
+      <div class="card-body">
+        <div class="decl-text">
+          मैं यह घोषणा करता/करती हूँ कि मेरे द्वारा ऑनलाइन आवेदन पत्र में स्वयं का नाम, वर्ग, जन्मतिथि, शैक्षणिक योग्यता
+          आदि से संबंधित समस्त जानकारी सही एवं मेरे विश्वास में सत्य है, जिसके सत्यतापूर्वक सही होने की मैं घोषणा करता/करती हूँ।
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="declAgree" name="declAgree">
+          <label for="declAgree" style="margin:0;font-weight:400;">I Agree (मैं सहमत हूँ)</label>
+        </div>
+
+        <label for="declCaptcha">Captcha (कृपया कैप्चा को दर्ज करें) <span class="req">*</span></label>
+        <input type="text" id="declCaptcha" name="declCaptcha" placeholder="Enter Captcha" autocomplete="off">
+        <div class="captcha-box">
+          <div class="captcha-img" id="declCaptchaImg">ZsiVMJ</div>
+          <button type="button" class="captcha-refresh" onclick="refreshCaptcha('declCaptchaImg')">⟳</button>
+        </div>
+
+        <button class="btn btn-green btn-full" onclick="submitRegistration()">Submit Registration</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REGISTRATION SUCCESS ═══════════════════ -->
+  <section id="view-reg-success" class="view hidden">
+    <div class="card">
+      <div class="success-box">
+        <div class="tick">✓</div>
+        <h2 style="margin:0 0 6px;">Profile Registered Successfully!</h2>
+        <p style="color:var(--text-mid);font-size:13px;">प्रोफाइल सफलतापूर्वक पंजीकृत हुई</p>
+        <div class="ref" id="regRefNumber">REG-2026-000000</div>
+        <br>
+        <button class="btn btn-primary" onclick="goTo('view-login'); setStep('Login')">Go to Login</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ DASHBOARD / EXAM LIST ═══════════════════ -->
+  <section id="view-dashboard" class="view hidden">
+    <div class="card">
+      <div class="card-header">Exam List</div>
+      <div class="card-body" style="padding:0;">
+        <table class="exam-table">
+          <thead>
+            <tr><th>Exam Name</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Assistant Grade-III / Process Writer Recruitment Examination (LAG26) - 2026 (Recruitment)
+                <div class="last-date">Last Date: 24-Jul-2026 05:00 PM</div>
+              </td>
+              <td><button class="apply-btn" onclick="goTo('view-app-1'); setStep('Application 1 / 5')">APPLY</button></td>
+            </tr>
+            <tr>
+              <td>
+                Operation Theatre Technician Recruitment Examination (HOTT26) - 2026 (Recruitment)
+                <div class="last-date">Last Date: 30-Jul-2026 05:00 PM</div>
+              </td>
+              <td><button class="apply-btn" onclick="goTo('view-app-1'); setStep('Application 1 / 5')">APPLY</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="nav-links"><a onclick="goTo('view-login'); setStep('Login')">← Logout (test replica)</a></p>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION STEP 1: Exam Pre-requisite ═══════════════════ -->
+  <section id="view-app-1" class="view hidden">
+    <div class="card">
+      <div class="card-header">Exam Pre-requisite</div>
+      <div class="card-body">
+        <label style="font-weight:600;">कृपया निम्न में से किसी एक या दोनों का चयन करें:*</label>
+        <div class="checkbox-row">
+          <input type="checkbox" id="preReqOrg1" name="preReqOrg1">
+          <label for="preReqOrg1" style="margin:0;font-weight:400;">Chhattisgarh State Legal Services Authority, Bilaspur</label>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="preReqOrg2" name="preReqOrg2">
+          <label for="preReqOrg2" style="margin:0;font-weight:400;">Chhattisgarh Government, Law and Legislative Affairs Department</label>
+        </div>
+
+        <label for="preReq10th">क्या आप किसी मान्यता प्राप्त मंडल से (10+2) परीक्षा उत्तीर्ण हैं? <span class="req">*</span></label>
+        <select id="preReq10th" name="preReq10th">
+          <option value="">--Select--</option>
+          <option value="Yes">Yes (हाँ)</option>
+          <option value="No">No (नहीं)</option>
+        </select>
+
+        <label for="preReqBoard">संकल / संस्था / परिषद् का नाम <span class="req">*</span></label>
+        <input type="text" id="preReqBoard" name="preReqBoard" placeholder="Board / Institution Name">
+
+        <label for="preReqRoll">रोल नंबर / अनुक्रमांक <span class="req">*</span></label>
+        <input type="text" id="preReqRoll" name="preReqRoll" placeholder="Roll Number">
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-app-2'); setStep('Application 2 / 5')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION STEP 2: Basic Info (readonly, from profile) ═══════════════════ -->
+  <section id="view-app-2" class="view hidden">
+    <div class="card">
+      <div class="card-header">Basic Information as per profile / प्रोफाइल अनुसार मूलभूत जानकारी</div>
+      <div class="card-body">
+        <label for="appName">Candidate's Name / उम्मीदवार का नाम</label>
+        <input type="text" id="appName" name="appName" readonly placeholder="(from profile)">
+
+        <label for="appFatherName">Father's Name / पिता का नाम <span class="req">*</span></label>
+        <input type="text" id="appFatherName" name="appFatherName" readonly placeholder="(from profile)">
+
+        <label for="appMotherName">Mother's Name / माता का नाम</label>
+        <input type="text" id="appMotherName" name="appMotherName" readonly placeholder="(from profile)">
+
+        <label for="appGender">Gender / लिंग</label>
+        <input type="text" id="appGender" name="appGender" readonly placeholder="(from profile)">
+
+        <label for="appDob">Date of Birth / जन्म की तारीख</label>
+        <input type="text" id="appDob" name="appDob" readonly placeholder="(from profile)">
+
+        <button class="btn btn-primary btn-full" onclick="goTo('view-app-3'); setStep('Application 3 / 5')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION STEP 3: Fee Details ═══════════════════ -->
+  <section id="view-app-3" class="view hidden">
+    <div class="card">
+      <div class="card-header">Exam Fee Details / परीक्षा शुल्क विवरण</div>
+      <div class="card-body">
+        <div class="fee-box">
+          <label style="margin-bottom:4px;">Payable Amount / भुगतान राशि</label>
+          <div class="amount">₹ 250</div>
+          <input type="text" id="feeAmount" name="feeAmount" value="250" readonly style="margin-top:10px;">
+        </div>
+        <button class="btn btn-primary btn-full" onclick="goTo('view-app-4'); setStep('Application 4 / 5')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION STEP 4: Exam City ═══════════════════ -->
+  <section id="view-app-4" class="view hidden">
+    <div class="card">
+      <div class="card-header">Select Preferred Examination District / वांछनीय जिले का चयन करें</div>
+      <div class="card-body">
+        <label for="examCity">Exam City <span class="req">*</span></label>
+        <select id="examCity" name="examCity">
+          <option value="">--Select--</option>
+          <option value="Raipur">Raipur</option>
+          <option value="Bilaspur">Bilaspur</option>
+          <option value="Durg">Durg</option>
+          <option value="Bastar">Bastar</option>
+          <option value="Ambikapur">Ambikapur</option>
+        </select>
+        <button class="btn btn-primary btn-full" onclick="goTo('view-app-5'); setStep('Application 5 / 5')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION STEP 5: Declaration ═══════════════════ -->
+  <section id="view-app-5" class="view hidden">
+    <div class="card">
+      <div class="card-header">Declaration / घोषणा</div>
+      <div class="card-body">
+        <div class="decl-text">
+          मैं यह घोषणा करता/करती हूं कि मेरे द्वारा ऑनलाइन आवेदन पत्र में दी गई समस्त जानकारी सही है। असत्य पाए जाने पर
+          मेरी उम्मीदवारी/नियुक्ति निरस्त की जा सकती है।
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" id="appDeclAgree" name="appDeclAgree">
+          <label for="appDeclAgree" style="margin:0;font-weight:400;">I Agree (मैं सहमत हूँ)</label>
+        </div>
+
+        <label for="appCaptcha">Captcha <span class="req">*</span></label>
+        <input type="text" id="appCaptcha" name="appCaptcha" placeholder="Enter Captcha" autocomplete="off">
+        <div class="captcha-box">
+          <div class="captcha-img" id="appCaptchaImg">7HN4XQ</div>
+          <button type="button" class="captcha-refresh" onclick="refreshCaptcha('appCaptchaImg')">⟳</button>
+        </div>
+
+        <button class="btn btn-green btn-full" onclick="submitApplication()">Submit Application</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ APPLICATION SUCCESS ═══════════════════ -->
+  <section id="view-app-success" class="view hidden">
+    <div class="card">
+      <div class="success-box">
+        <div class="tick">✓</div>
+        <h2 style="margin:0 0 6px;">Application Submitted Successfully!</h2>
+        <p style="color:var(--text-mid);font-size:13px;">आवेदन सफलतापूर्वक जमा हुआ</p>
+        <div class="ref" id="appRefNumber">APP-2026-000000</div>
+        <br>
+        <button class="btn btn-primary" onclick="goTo('view-dashboard'); setStep('Exam List')">Back to Exam List</button>
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <script>
-  const startTime = performance.now();
-  const stepNames = ['Personal','Parent/Guardian','Address','Academic','Exam center','Documents','Declaration','Payment'];
-  const total = stepNames.length;
-  let current = 0;
-
-  const stepsBar = document.getElementById('stepsBar');
-  stepNames.forEach((n,i)=>{
-    const d = document.createElement('div');
-    d.className = 'step-dot'; d.id = 'dot-'+i;
-    stepsBar.appendChild(d);
-  });
-  const dots = stepNames.map((n,i)=> document.getElementById('dot-'+i));
-  const panels = stepNames.map((n,i)=> document.getElementById('panel-'+i));
-  const backBtn = document.getElementById('backBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const stepLabel = document.getElementById('stepLabel');
-
-  let captchaValue = '';
-  function newCaptcha(){
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    captchaValue = Array.from({length:5}, ()=> chars[Math.floor(Math.random()*chars.length)]).join('');
-    document.getElementById('captchaText').textContent = captchaValue;
-  }
-  newCaptcha();
-  document.getElementById('refreshCaptcha').addEventListener('click', newCaptcha);
-
-  document.getElementById('sameAddress').addEventListener('change', function(){
-    document.getElementById('correspondenceBlock').style.display = this.checked ? 'none' : 'block';
-  });
-
-  function updateUI(){
-    panels.forEach((p,i)=> p.classList.toggle('active', i===current));
-    dots.forEach((d,i)=>{ d.classList.toggle('active', i===current); d.classList.toggle('done', i<current); });
-    stepLabel.textContent = 'Step ' + (current+1) + ' of ' + total + ': ' + stepNames[current];
-    backBtn.disabled = current === 0;
-    nextBtn.textContent = current === total-1 ? 'Final submit' : 'Save and continue';
-    if (current === 7){ buildReview(); calcFee(); }
+  // ── SPA-style view switching (no real page navigation — this is
+  // intentional, so the same MutationObserver-based SPA step-detector
+  // your Flutter engine uses gets exercised here too). ──
+  function goTo(viewId){
+    document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+    const target = document.getElementById(viewId);
+    target.classList.remove('hidden');
+    window.scrollTo({top:0, behavior:'smooth'});
   }
 
-  function calcFee(){
-    const cat = document.getElementById('category').value;
-    let fee = 1700;
-    if (cat === 'SC' || cat === 'ST' || cat === 'PwD') fee = 1000;
-    else if (cat === 'OBC-NCL' || cat === 'EWS') fee = 1600;
-    document.getElementById('feeBox').textContent = 'Application fee for category "' + (cat||'General') + '": Rs. ' + fee + ' (test mode — no real payment will be taken)';
+  function setStep(label){
+    document.getElementById('stepIndicator').textContent = label;
   }
 
-  function buildReview(){
-    const fields = [
-      ['Full name','full_name'],['DOB','dob'],['Gender','gender'],['Category','category'],
-      ['Father name','father_name'],['Mother name','mother_name'],
-      ['Permanent address','perm_address'],['Class 12 board','c12_board'],
-      ['Exam city preference 1','pref1']
-    ];
-    let html = '';
-    fields.forEach(([label,id])=>{
-      const el = document.getElementById(id);
-      html += `<div class="review-item"><span>${label}</span><span>${el.value || '(empty)'}</span></div>`;
-    });
-    const photo = document.getElementById('photo').files[0];
-    const sig = document.getElementById('signature').files[0];
-    const thumb = document.getElementById('thumb').files[0];
-    html += `<div class="review-item"><span>Photo</span><span>${photo?photo.name:'(not uploaded)'}</span></div>`;
-    html += `<div class="review-item"><span>Signature</span><span>${sig?sig.name:'(not uploaded)'}</span></div>`;
-    html += `<div class="review-item"><span>Thumb impression</span><span>${thumb?thumb.name:'(not uploaded)'}</span></div>`;
-    document.getElementById('reviewBox').innerHTML = html;
+  function randomCaptcha(){
+    const chars = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+    let s = '';
+    for(let i=0;i<6;i++) s += chars[Math.floor(Math.random()*chars.length)];
+    return s;
   }
 
-  nextBtn.addEventListener('click', ()=>{
-    const activePanel = panels[current];
-    const requiredInputs = activePanel.querySelectorAll('[required]');
-    for (const inp of requiredInputs){
-      if (inp.type === 'checkbox' ? !inp.checked : !inp.value){
-        inp.style.borderColor = 'red'; inp.focus(); return;
-      }
-      inp.style.borderColor = '#ccc';
+  function refreshCaptcha(elId){
+    document.getElementById(elId).textContent = randomCaptcha();
+  }
+
+  function copyPresentToPermanent(){
+    const checked = document.getElementById('sameAsPresent').checked;
+    if(!checked) return;
+    document.getElementById('permHouseNo').value = document.getElementById('pHouseNo').value;
+    document.getElementById('permStreet').value = document.getElementById('pStreet').value;
+    document.getElementById('permCity').value = document.getElementById('pCity').value;
+    document.getElementById('permPostOffice').value = document.getElementById('pPostOffice').value;
+    document.getElementById('permDistrict').value = document.getElementById('pDistrict').value;
+    document.getElementById('permState').value = document.getElementById('pState').value;
+    document.getElementById('permPincode').value = document.getElementById('pPincode').value;
+  }
+
+  function genRefNumber(prefix){
+    const year = new Date().getFullYear();
+    const rand = Math.floor(100000 + Math.random()*900000);
+    return prefix + '-' + year + '-' + rand;
+  }
+
+  function submitRegistration(){
+    if(!document.getElementById('declAgree').checked){
+      alert('Please check "I Agree" before submitting.');
+      return;
     }
-    if (current === 6){
-      const captchaInput = document.getElementById('captchaInput').value.trim().toUpperCase();
-      if (captchaInput !== captchaValue){
-        alert('Captcha does not match. Please try again.');
-        newCaptcha();
-        document.getElementById('captchaInput').value = '';
-        return;
-      }
+    if(!document.getElementById('declCaptcha').value.trim()){
+      alert('Please enter the captcha.');
+      return;
     }
-    if (current < total-1){ current++; updateUI(); return; }
+    // Carry basic info forward into the "Basic Information as per
+    // profile" readonly fields on the application form, so testing the
+    // full registration -> application flow feels end-to-end.
+    document.getElementById('appName').value = document.getElementById('bFullName').value;
+    document.getElementById('appFatherName').value = document.getElementById('bFatherName').value;
+    document.getElementById('appMotherName').value = document.getElementById('bMotherName').value;
+    document.getElementById('appGender').value = document.getElementById('bGender').value;
+    document.getElementById('appDob').value = document.getElementById('bDob').value;
 
-    const otpBoxes = document.querySelectorAll('.otp-box');
-    const otp = Array.from(otpBoxes).map(b=>b.value).join('');
-    if (otp.length !== 6){ alert('Enter all 6 OTP digits (any digits work in test mode).'); return; }
+    document.getElementById('regRefNumber').textContent = genRefNumber('REG');
+    goTo('view-reg-success');
+    setStep('Registered');
+  }
 
-    const elapsed = ((performance.now() - startTime)/1000).toFixed(2);
-    const resultBox = document.getElementById('result');
-    resultBox.style.display = 'block';
-    resultBox.textContent = 'APPLICATION SUBMITTED\nTime from page load to final submit: ' + elapsed + 's\nSteps completed: ' + total + '\nOTP entered: ' + otp;
-    document.getElementById('timer').textContent = 'Completed in ' + elapsed + 's';
-    nextBtn.disabled = true;
-  });
-
-  backBtn.addEventListener('click', ()=>{ if (current>0){ current--; updateUI(); } });
-
-  const otpBoxesInit = document.querySelectorAll('.otp-box');
-  otpBoxesInit.forEach((box, idx)=>{
-    box.addEventListener('input', ()=>{ if (box.value && idx < otpBoxesInit.length-1) otpBoxesInit[idx+1].focus(); });
-  });
-
-  updateUI();
+  function submitApplication(){
+    if(!document.getElementById('appDeclAgree').checked){
+      alert('Please check "I Agree" before submitting.');
+      return;
+    }
+    if(!document.getElementById('appCaptcha').value.trim()){
+      alert('Please enter the captcha.');
+      return;
+    }
+    document.getElementById('appRefNumber').textContent = genRefNumber('APP');
+    goTo('view-app-success');
+    setStep('Submitted');
+  }
 </script>
+
 </body>
 </html>
